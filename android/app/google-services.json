@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "43033873583",
+    "project_id": "oneclx",
+    "storage_bucket": "oneclx.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:43033873583:android:617cc59a6d0113008f185a",
+        "android_client_info": {
+          "package_name": "com.example.one_clx"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "43033873583-59ta8rr81281vvv9hpdod81nvq3c4jir.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDZQymJQ1X2E6BkyQ78JLy7-xALnOBoz8s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "43033873583-59ta8rr81281vvv9hpdod81nvq3c4jir.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
