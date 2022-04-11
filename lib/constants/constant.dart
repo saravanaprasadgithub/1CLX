@@ -10,8 +10,21 @@ class Const{
           color: Colors.white,fontSize: 18));
   static TextStyle txt = GoogleFonts.poppins(
       textStyle: TextStyle(
-        color: Colors.black,));
+        color: Color(0xffBEBEBE),));
+  static TextStyle errtxt = GoogleFonts.poppins(
+      textStyle: TextStyle(
+        color: Colors.red,));
   static TextStyle btntxt = GoogleFonts.poppins(
       textStyle: TextStyle(
         color: Colors.white,fontSize: 25));
+  static TextStyle signupbtn = GoogleFonts.poppins(
+      textStyle: TextStyle(
+          color: Color(0xff385CB7),fontSize: 16));
+  static TextStyle bigtxt = GoogleFonts.poppins(
+      textStyle: TextStyle(
+          color: Color(0xff385CB7),fontSize: 20,fontWeight: FontWeight.bold));
+  static TextStyle OTPtxt = GoogleFonts.poppins(
+      textStyle: TextStyle(
+          color: Color(0xff5F89D8),fontSize: 20));
+  static Color iconclr=  Color(0xffBEBEBE);
 }
