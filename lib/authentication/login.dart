@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:one_clx/authentication/signup.dart';
 import 'package:one_clx/constants/constant.dart';
+import 'package:one_clx/registration_forms/business_profile.dart';
 
 class login extends StatefulWidget {
   const login({Key? key}) : super(key: key);
@@ -96,7 +97,7 @@ class _loginState extends State<login> {
                     Padding(
                       padding: const EdgeInsets.fromLTRB(20,10,20,10),
                       child: TextFormField(
-                        style: Const.txt,
+                        style: Const.Normal,
                         keyboardType: TextInputType.emailAddress,
                         controller: EmailCntrlr,
                         decoration: InputDecoration(
@@ -127,7 +128,7 @@ class _loginState extends State<login> {
                     Padding(
                       padding: const EdgeInsets.fromLTRB(20,10,20,10),
                       child: TextFormField(
-                        style: Const.txt,
+                        style: Const.Normal,
                         obscureText: _obscureText,
                         controller: PasswordCntrlr,
                         decoration: InputDecoration(
@@ -203,12 +204,16 @@ class _loginState extends State<login> {
                         ),
                         child: Text("Submit",style: Const.btntxt,),
                         onPressed: () async {
-                          if(_formkey.currentState!.validate())
-                          {
-
-                          }else{
-                            print("UnSuccessfull");
-                          }
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const Business_Profile()),
+                          );
+                          // if(_formkey.currentState!.validate())
+                          // {
+                          //
+                          // }else{
+                          //   print("UnSuccessfull");
+                          // }
                         },
                       ),
                     ),
@@ -302,7 +307,10 @@ class _loginState extends State<login> {
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(20,8,20,8),
                   child: TextFormField(
-                    style: Const.txt,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.digitsOnly
+                    ],
+                    style: Const.Normal,
                     controller: MobileCntrlr,
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(

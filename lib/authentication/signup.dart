@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:one_clx/authentication/login.dart';
 import 'package:one_clx/constants/constant.dart';
 
@@ -40,7 +41,7 @@ class _signupState extends State<signup> {
               Padding(
                 padding: const EdgeInsets.fromLTRB(20,10,20,10),
                 child: TextFormField(
-                  style: Const.txt,
+                  style: Const.Normal,
                   keyboardType: TextInputType.emailAddress,
                   controller: NameCntrlr,
                   decoration: InputDecoration(
@@ -68,7 +69,7 @@ class _signupState extends State<signup> {
               Padding(
                 padding: const EdgeInsets.fromLTRB(20,10,20,10),
                 child: TextFormField(
-                  style: Const.txt,
+                  style: Const.Normal,
                   keyboardType: TextInputType.emailAddress,
                   controller: EmailCntrlr,
                   decoration: InputDecoration(
@@ -99,7 +100,10 @@ class _signupState extends State<signup> {
               Padding(
                 padding: const EdgeInsets.fromLTRB(20,8,20,8),
                 child: TextFormField(
-                  style: Const.txt,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly
+                  ],
+                  style: Const.Normal,
                   controller: MobileCntrlr,
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(
@@ -130,7 +134,7 @@ class _signupState extends State<signup> {
               Padding(
                 padding: const EdgeInsets.fromLTRB(20,10,20,10),
                 child: TextFormField(
-                  style: Const.txt,
+                  style: Const.Normal,
                   obscureText: _obscureText,
                   controller: PasswordCntrlr,
                   decoration: InputDecoration(

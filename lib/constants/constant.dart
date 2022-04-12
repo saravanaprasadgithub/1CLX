@@ -8,6 +8,14 @@ class Const{
   static TextStyle common = GoogleFonts.poppins(
       textStyle: TextStyle(
           color: Colors.white,fontSize: 18));
+  static TextStyle Normalbold = GoogleFonts.poppins(
+      textStyle: TextStyle(
+        color: Colors.black,fontWeight: FontWeight.w500,fontSize: 20
+      ));
+  static TextStyle Normal = GoogleFonts.poppins(
+      textStyle: TextStyle(
+          color: Colors.black
+      ));
   static TextStyle txt = GoogleFonts.poppins(
       textStyle: TextStyle(
         color: Color(0xffBEBEBE),));
