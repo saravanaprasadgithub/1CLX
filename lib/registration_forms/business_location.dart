@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:csc_picker/csc_picker.dart';
 import 'package:flutter/services.dart';
 import 'package:one_clx/constants/constant.dart';
+import 'package:one_clx/registration_forms/google_location.dart';
 
 class Business_Location extends StatefulWidget {
   const Business_Location({Key? key}) : super(key: key);
@@ -223,16 +224,16 @@ class _Business_LocationState extends State<Business_Location> {
                       ),
                       child: Text("Next",style: Const.btntxt,),
                       onPressed: () async {
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(builder: (context) => const Business_Location()),
-                        // );
-                        if(_formkey.currentState!.validate())
-                        {
-
-                        }else{
-                          print("UnSuccessfull");
-                        }
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const Google_Location()),
+                        );
+                        // if(_formkey.currentState!.validate())
+                        // {
+                        //
+                        // }else{
+                        //   print("UnSuccessfull");
+                        // }
                       },
                     ),
                   ),
