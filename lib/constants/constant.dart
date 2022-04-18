@@ -37,6 +37,9 @@ class Const{
   static TextStyle signupbtn = GoogleFonts.poppins(
       textStyle: TextStyle(
           color: Color(0xffFFFFFF),fontSize: 14));
+  static TextStyle signinbtn = GoogleFonts.poppins(
+      textStyle: TextStyle(
+          color:  Color(0xff385CB7),fontSize: 14));
   static TextStyle bigtxt = GoogleFonts.poppins(
       textStyle: TextStyle(
           color: Color(0xff385CB7),fontSize: 20,fontWeight: FontWeight.bold));

@@ -341,10 +341,10 @@ class _signupState extends State<signup> {
                                       MaterialPageRoute(builder: (context) => const login()),
                                     );
                                   },style: ElevatedButton.styleFrom(
-                                    primary: Color(0xff395DB8), shape: RoundedRectangleBorder(
+                                    primary: Color(0xffFFFFFF), shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(35.0),
                                   ),
-                                  ), child: Text("Sign In",style: Const.signupbtn,)),
+                                  ), child: Text("Sign In",style: Const.signinbtn,)),
                                 ],),
                             ),
                           ],

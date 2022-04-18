@@ -247,16 +247,16 @@ class _loginState extends State<login> {
                                   ),
                                   child: Text("Submit",style: Const.btntxt,),
                                   onPressed: () async {
-                                    // Navigator.push(
-                                    //   context,
-                                    //   MaterialPageRoute(builder: (context) => const Business_Profile()),
-                                    // );
-                                    if(_formkey.currentState!.validate())
-                                    {
-
-                                    }else{
-                                      print("UnSuccessfull");
-                                    }
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => const Business_Profile()),
+                                    );
+                                    // if(_formkey.currentState!.validate())
+                                    // {
+                                    //
+                                    // }else{
+                                    //   print("UnSuccessfull");
+                                    // }
                                   },
                                 ),
                               ),
