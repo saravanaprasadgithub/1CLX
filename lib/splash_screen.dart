@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:one_clx/authentication/login.dart';
-import 'package:one_clx/constants/constant.dart';
 
 class splash extends StatefulWidget {
   const splash({Key? key}) : super(key: key);
@@ -25,8 +24,24 @@ class _splashState extends State<splash> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Image.asset('assets/load.png',fit: BoxFit.fill, height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,),
+      body: Container(
+        constraints: BoxConstraints.expand(),
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/load.png"),
+            fit: BoxFit.fill,
+          )
+        ),
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 8),
+          child: Align(
+            alignment: Alignment.bottomCenter,
+            child: CircularProgressIndicator(
+              color: Color(0xff385CB7),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

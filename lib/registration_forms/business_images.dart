@@ -1,4 +1,9 @@
+import 'dart:io';
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:one_clx/constants/constant.dart';
 import 'package:one_clx/registration_forms/publish.dart';
 
@@ -10,6 +15,20 @@ class Business_Images extends StatefulWidget {
 }
 
 class _Business_ImagesState extends State<Business_Images> {
+  File?logo;
+  List <XFile> ? images=[];
+  Future pickImage() async{
+    try{
+      final List <XFile> ? image= await ImagePicker().pickMultiImage();
+      if(image==null)return;
+      setState(() {
+        images!.addAll(image);
+      });
+    } on PlatformException catch (e){
+      print('fail to pick  image:$e');
+    }
+
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -84,11 +103,54 @@ class _Business_ImagesState extends State<Business_Images> {
                   ),
                   child: Text("Upload Logo",style: Const.btntxt,),
                   onPressed: () async {
-
+                    pickImage();
                   },
                 ),
               ),
+              Text("Atleast 3 images (Size : 300 x 300 Pixels)",style:Const.txt),
+              SizedBox(height: 5,),
+              Container(
+                height: 150,
+               // width: 150,
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  scrollDirection: Axis.horizontal,
+                  itemCount: images!.isEmpty? 1 :images!.length,
+                  itemBuilder: (context,index){
+                    return Stack(
+                      children: [
+                        Container(
+                          height: 150,
+                          width: 150,
+                          color: Color(0xffF1F1F1),
+                          child: images!.isNotEmpty?Image.file(File(images![index].path),fit: BoxFit.cover,):Center(child: Text('Image',style: Const.txt,)),
+                        ),
+                        Positioned(
+                            top: 0.0,
+                            right: 0.0,
+                            child:InkWell(
+                              onTap: (){
+                                setState(() {
+                                  images!.isEmpty;
+                                });
+                              },
+                              child: Align(
+                                alignment: Alignment.topRight,
+                                child: CircleAvatar(
+                                  radius: 12.0,
+                                  backgroundColor: Color(0xffD6D5D5),
+                                  child: Icon(
+                                    Icons.close,color: Const.iconclr,
+                                  ),
+                                ),
+                              ),
+                            ))
+                      ],
+                    );
+                  },
 
+                ),
+              ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child:Row(

@@ -1,6 +1,10 @@
+import 'dart:io';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:one_clx/constants/constant.dart';
 import 'package:one_clx/registration_forms/business_headerimage.dart';
+import 'package:image_picker/image_picker.dart';
 
 class Business_Logo extends StatefulWidget {
   const Business_Logo({Key? key}) : super(key: key);
@@ -10,6 +14,20 @@ class Business_Logo extends StatefulWidget {
 }
 
 class _Business_LogoState extends State<Business_Logo> {
+  File?logo;
+  Future pickImage() async{
+    try{
+      final image= await ImagePicker().pickImage(source: ImageSource.gallery);
+      if(image==null)return;
+      final tempImage= File(image.path);
+      setState(() {
+        this.logo = tempImage;
+      });
+    } on PlatformException catch (e){
+      print('fail to pick  image:$e');
+    }
+
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -84,9 +102,40 @@ class _Business_LogoState extends State<Business_Logo> {
                   ),
                   child: Text("Upload Logo",style: Const.btntxt,),
                   onPressed: () async {
-
+                      pickImage();
                   },
                 ),
+              ),
+
+              Stack(
+                children: [
+                  Container(
+                    height: 150,
+                    width: 150,
+                    color: Color(0xffF1F1F1),
+                    child: logo!=null?Image.file(logo!,fit: BoxFit.cover,):Center(child: Text('Image',style: Const.txt,)),
+                  ),
+                  Positioned(
+                    top: 0.0,
+                    right: 0.0,
+                      child:InkWell(
+                        onTap: (){
+                          setState(() {
+                            logo=null;
+                          });
+                        },
+                    child: Align(
+                      alignment: Alignment.topRight,
+                      child: CircleAvatar(
+                        radius: 12.0,
+                        backgroundColor: Color(0xffD6D5D5),
+                        child: Icon(
+                          Icons.close,color: Const.iconclr,
+                        ),
+                      ),
+                    ),
+                  ))
+                ],
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),

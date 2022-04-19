@@ -42,7 +42,7 @@ class _Business_DescriptionState extends State<Business_Description> {
             child: Column(
               children: [
                 Padding(
-                    padding: const EdgeInsets.fromLTRB(20,25,20,0),
+                    padding: const EdgeInsets.fromLTRB(20,40,20,0),
                     child: Image.network("https://firebasestorage.googleapis.com/v0/b/oneclx.appspot.com/o/asset%2Ficon%2FBD.png?alt=media&token=88d7acab-112e-47e1-b6b6-9b7c0f94b91a",width: 70,)
                 ),
                 Padding(
@@ -50,7 +50,7 @@ class _Business_DescriptionState extends State<Business_Description> {
                   child: Center(child: Text('Business Description',style: Const.appbartxt,)),
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(20,40,20,2),
+                  padding: const EdgeInsets.fromLTRB(20,35,20,2),
                   child: Align(child: Text("3 of 6 Completed",style: Const.OTPtxt,), alignment: Alignment.center,),
                 ),
                 Padding(
@@ -241,7 +241,7 @@ class _Business_DescriptionState extends State<Business_Description> {
                 //   ],
                 // ),
 
-              Padding(
+              Padding (
                 padding: const EdgeInsets.all(8.0),
                 child:Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
