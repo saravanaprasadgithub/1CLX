@@ -132,7 +132,7 @@ class _Business_ImagesState extends State<Business_Images> {
                             child:InkWell(
                               onTap: (){
                                 setState(() {
-                                  images!.isEmpty;
+                                  images!.removeAt(index);
                                 });
                               },
                               child: Align(
