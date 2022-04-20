@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:one_clx/constants/constant.dart';
 import 'package:one_clx/registration_forms/business_headerimage.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:swipe_to/swipe_to.dart';
 
 class Business_Logo extends StatefulWidget {
   const Business_Logo({Key? key}) : super(key: key);
@@ -102,7 +103,7 @@ class _Business_LogoState extends State<Business_Logo> {
                   ),
                   child: Text("Upload Logo",style: Const.btntxt,),
                   onPressed: () async {
-                      pickImage();
+                    pickImage();
                   },
                 ),
               ),
@@ -116,56 +117,38 @@ class _Business_LogoState extends State<Business_Logo> {
                     child: logo!=null?Image.file(logo!,fit: BoxFit.cover,):Center(child: Text('Image',style: Const.txt,)),
                   ),
                   Positioned(
-                    top: 0.0,
-                    right: 0.0,
+                      top: 0.0,
+                      right: 0.0,
                       child:InkWell(
                         onTap: (){
                           setState(() {
                             logo=null;
                           });
                         },
-                    child: Align(
-                      alignment: Alignment.topRight,
-                      child: CircleAvatar(
-                        radius: 12.0,
-                        backgroundColor: Color(0xffD6D5D5),
-                        child: Icon(
-                          Icons.close,color: Const.iconclr,
+                        child: Align(
+                          alignment: Alignment.topRight,
+                          child: CircleAvatar(
+                            radius: 12.0,
+                            backgroundColor: Color(0xffD6D5D5),
+                            child: Icon(
+                              Icons.close,color: Const.iconclr,
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                  ))
+                      ))
                 ],
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child:Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     Image.network("https://firebasestorage.googleapis.com/v0/b/oneclx.appspot.com/o/asset%2Flogo%2Fimg1.png?alt=media&token=8aa401b4-5635-451f-af67-3dcd82117797",width: 70,),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        onPrimary:const Color(0xff5F89D8) ,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5.0),
-                        ),
-                        primary: const Color(0xff5F89D8),
-                      ),
-                      child: Text("Previous",style: Const.btntxt,),
-                      onPressed: () async {
-                        Navigator.pop(context);
-                      },
-                    ),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        onPrimary:const Color(0xff5F89D8) ,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5.0),
-                        ),
-                        primary: const Color(0xff5F89D8),
-                      ),
-                      child: Text("Next",style: Const.btntxt,),
-                      onPressed: () async {
+                    Image.network("https://firebasestorage.googleapis.com/v0/b/oneclx.appspot.com/o/asset%2Flogo%2FLefi.png?alt=media&token=6ce0a918-d370-46ac-8569-13be12e85940",),
+                    SwipeTo(
+                      child: Text("Swipe",style: Const.common,),
+                      iconColor: Colors.transparent,
+                      onLeftSwipe: () async{
                         Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => const Business_Header()),
@@ -176,8 +159,49 @@ class _Business_LogoState extends State<Business_Logo> {
                         // }else{
                         //   print("UnSuccessfull");
                         // }
+
+                      },
+                      onRightSwipe: ()async{
+                        Navigator.pop(context);
                       },
                     ),
+                    Image.network("https://firebasestorage.googleapis.com/v0/b/oneclx.appspot.com/o/asset%2Flogo%2FRight.png?alt=media&token=6f429db7-33c2-4063-865b-f0f8417a4acc",),
+
+                    // ElevatedButton(
+                    //   style: ElevatedButton.styleFrom(
+                    //     onPrimary:const Color(0xff5F89D8) ,
+                    //     shape: RoundedRectangleBorder(
+                    //       borderRadius: BorderRadius.circular(5.0),
+                    //     ),
+                    //     primary: const Color(0xff5F89D8),
+                    //   ),
+                    //   child: Text("Previous",style: Const.btntxt,),
+                    //   onPressed: () async {
+                    //     Navigator.pop(context);
+                    //   },
+                    // ),
+                    // ElevatedButton(
+                    //   style: ElevatedButton.styleFrom(
+                    //     onPrimary:const Color(0xff5F89D8) ,
+                    //     shape: RoundedRectangleBorder(
+                    //       borderRadius: BorderRadius.circular(5.0),
+                    //     ),
+                    //     primary: const Color(0xff5F89D8),
+                    //   ),
+                    //   child: Text("Next",style: Const.btntxt,),
+                    //   onPressed: () async {
+                    //     Navigator.push(
+                    //       context,
+                    //       MaterialPageRoute(builder: (context) => const Business_Header()),
+                    //     );
+                    //     // if(_formkey.currentState!.validate())
+                    //     // {
+                    //     //
+                    //     // }else{
+                    //     //   print("UnSuccessfull");
+                    //     // }
+                    //   },
+                    // ),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(0, 25, 0, 0),
                       child: Image.network("https://firebasestorage.googleapis.com/v0/b/oneclx.appspot.com/o/asset%2Flogo%2Fimg2.png?alt=media&token=b8fcb386-3ab4-4f9c-bece-bc3be039c5e5",width: 70,),

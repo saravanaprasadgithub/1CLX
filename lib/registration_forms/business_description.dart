@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:one_clx/constants/constant.dart';
 import 'package:one_clx/registration_forms/business_logo.dart';
+import 'package:swipe_to/swipe_to.dart';
 
 class Business_Description extends StatefulWidget {
   const Business_Description({Key? key}) : super(key: key);
@@ -19,26 +20,26 @@ class _Business_DescriptionState extends State<Business_Description> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xffFFFFFF),
-      body: Form(
-        key: _formkey,
-        child: SingleChildScrollView(
-          child: Container(
-            decoration: BoxDecoration(
-                gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    stops: [
-                      0.0,
-                      0.1,
-                      0.3,
-                    ],
-                    colors: [
-                      Color(0xff385CB7),
-                      Color(0xff5F89D8),
-                      Color(0xffFFFFFF),
-                    ]
-                )
-            ),
+      body: SingleChildScrollView(
+        child: Container(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  stops: [
+                    0.0,
+                    0.1,
+                    0.3,
+                  ],
+                  colors: [
+                    Color(0xff385CB7),
+                    Color(0xff5F89D8),
+                    Color(0xffFFFFFF),
+                  ]
+              )
+          ),
+          child: Form(
+            key: _formkey,
             child: Column(
               children: [
                 Padding(
@@ -118,50 +119,50 @@ class _Business_DescriptionState extends State<Business_Description> {
                     },
                   ),
                 ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(20,10,20,0),
-                child: TextFormField(
-                  style: Const.Normal,
-                  keyboardType: TextInputType.emailAddress,
-                  controller: EmailCntrlr,
-                  decoration: InputDecoration(
-                    contentPadding: EdgeInsets.symmetric(vertical: 5,horizontal: 5),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20,10,20,0),
+                  child: TextFormField(
+                    style: Const.Normal,
+                    keyboardType: TextInputType.emailAddress,
+                    controller: EmailCntrlr,
+                    decoration: InputDecoration(
+                      contentPadding: EdgeInsets.symmetric(vertical: 5,horizontal: 5),
                       fillColor: Colors.white,
                       filled: true,
                       suffixIcon: Icon(Icons.mail_outline_rounded,color: Const.iconclr),
                       hintText: 'Email ID',hintStyle: Const.txt,
                       errorStyle: Const.errtxt,
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                      borderSide: const BorderSide(color: Color(0xff5F89D8),width: 1),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                        borderSide: const BorderSide(color: Color(0xff5F89D8),width: 1),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                        borderSide: const BorderSide(color: Color(0xff5F89D8),width: 1),
+                      ),
+                      errorBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                        borderSide: const BorderSide(color: Colors.red,width: 1),
+                      ),
+                      focusedErrorBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                        borderSide: const BorderSide(color: Colors.red,width: 1),
+                      ),
                     ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                      borderSide: const BorderSide(color: Color(0xff5F89D8),width: 1),
-                    ),
-                    errorBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                      borderSide: const BorderSide(color: Colors.red,width: 1),
-                    ),
-                    focusedErrorBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                      borderSide: const BorderSide(color: Colors.red,width: 1),
-                    ),
+                    validator: (String? value){
+                      if(value!.isEmpty){
+                        return 'Enter Email-ID';
+                      }
+                      if(!RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(value)){
+                        return 'Please a valid Email';
+                      }
+                      return null;
+                    },
+                    onSaved: (String? value){
+                      email = value!;
+                    },
                   ),
-                  validator: (String? value){
-                    if(value!.isEmpty){
-                      return 'Enter Email-ID';
-                    }
-                    if(!RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(value)){
-                      return 'Please a valid Email';
-                    }
-                    return null;
-                  },
-                  onSaved: (String? value){
-                    email = value!;
-                  },
                 ),
-              ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(20,10,20,0),
                   child: TextFormField(
@@ -194,101 +195,78 @@ class _Business_DescriptionState extends State<Business_Description> {
                     ),
                   ),
                 ),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                //   children: [
-                //     Padding(
-                //       padding: const EdgeInsets.fromLTRB(20,8,20,8),
-                //       child: ElevatedButton(
-                //         style: ElevatedButton.styleFrom(
-                //           onPrimary:const Color(0xff5F89D8) ,
-                //           shape: RoundedRectangleBorder(
-                //             borderRadius: BorderRadius.circular(5.0),
-                //           ),
-                //           primary: const Color(0xff5F89D8),
-                //         ),
-                //         child: Text("Previous",style: Const.btntxt,),
-                //         onPressed: () async {
-                //           Navigator.pop(context);
-                //         },
-                //       ),
-                //     ),
-                //     Padding(
-                //       padding: const EdgeInsets.fromLTRB(20,8,20,8),
-                //       child: ElevatedButton(
-                //         style: ElevatedButton.styleFrom(
-                //           onPrimary:const Color(0xff5F89D8) ,
-                //           shape: RoundedRectangleBorder(
-                //             borderRadius: BorderRadius.circular(5.0),
-                //           ),
-                //           primary: const Color(0xff5F89D8),
-                //         ),
-                //         child: Text("Next",style: Const.btntxt,),
-                //         onPressed: () async {
-                //           // Navigator.push(
-                //           //   context,
-                //           //   MaterialPageRoute(builder: (context) => const Publish()),
-                //           // );
-                //           if(_formkey.currentState!.validate())
-                //           {
-                //
-                //           }else{
-                //             print("UnSuccessfull");
-                //           }
-                //         },
-                //       ),
-                //     ),
-                //   ],
-                // ),
+                Padding (
+                  padding: const EdgeInsets.all(8.0),
+                  child:Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Image.network("https://firebasestorage.googleapis.com/v0/b/oneclx.appspot.com/o/asset%2Flogo%2Fimg1.png?alt=media&token=8aa401b4-5635-451f-af67-3dcd82117797",width: 70,),
+                      Image.network("https://firebasestorage.googleapis.com/v0/b/oneclx.appspot.com/o/asset%2Flogo%2FLefi.png?alt=media&token=6ce0a918-d370-46ac-8569-13be12e85940",),
+                      SwipeTo(
+                        child: Text("Swipe",style: Const.common,),
+                        iconColor: Colors.transparent,
+                        onLeftSwipe: () async{
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const Business_Logo()),
+                          );
+                          // if(_formkey.currentState!.validate())
+                          // {
+                          //
+                          // }else{
+                          //   print("UnSuccessfull");
+                          // }
 
-              Padding (
-                padding: const EdgeInsets.all(8.0),
-                child:Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Image.network("https://firebasestorage.googleapis.com/v0/b/oneclx.appspot.com/o/asset%2Flogo%2Fimg1.png?alt=media&token=8aa401b4-5635-451f-af67-3dcd82117797",width: 70,),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        onPrimary:const Color(0xff5F89D8) ,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5.0),
-                        ),
-                        primary: const Color(0xff5F89D8),
+                        },
+                        onRightSwipe: ()async{
+                          Navigator.pop(context);
+                        },
+
                       ),
-                      child: Text("Previous",style: Const.btntxt,),
-                      onPressed: () async {
-                        Navigator.pop(context);
-                      },
-                    ),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        onPrimary:const Color(0xff5F89D8) ,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5.0),
-                        ),
-                        primary: const Color(0xff5F89D8),
+                      Image.network("https://firebasestorage.googleapis.com/v0/b/oneclx.appspot.com/o/asset%2Flogo%2FRight.png?alt=media&token=6f429db7-33c2-4063-865b-f0f8417a4acc",),
+
+                      // ElevatedButton(
+                      //   style: ElevatedButton.styleFrom(
+                      //     onPrimary:const Color(0xff5F89D8) ,
+                      //     shape: RoundedRectangleBorder(
+                      //       borderRadius: BorderRadius.circular(5.0),
+                      //     ),
+                      //     primary: const Color(0xff5F89D8),
+                      //   ),
+                      //   child: Text("Previous",style: Const.btntxt,),
+                      //   onPressed: () async {
+                      //     Navigator.pop(context);
+                      //   },
+                      // ),
+                      // ElevatedButton(
+                      //   style: ElevatedButton.styleFrom(
+                      //     onPrimary:const Color(0xff5F89D8) ,
+                      //     shape: RoundedRectangleBorder(
+                      //       borderRadius: BorderRadius.circular(5.0),
+                      //     ),
+                      //     primary: const Color(0xff5F89D8),
+                      //   ),
+                      //   child: Text("Next",style: Const.btntxt,),
+                      //   onPressed: () async {
+                      //     Navigator.push(
+                      //       context,
+                      //       MaterialPageRoute(builder: (context) => const Business_Logo()),
+                      //     );
+                      //     // if(_formkey.currentState!.validate())
+                      //     // {
+                      //     //
+                      //     // }else{
+                      //     //   print("UnSuccessfull");
+                      //     // }
+                      //   },
+                      // ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 25, 0, 0),
+                        child: Image.network("https://firebasestorage.googleapis.com/v0/b/oneclx.appspot.com/o/asset%2Flogo%2Fimg2.png?alt=media&token=b8fcb386-3ab4-4f9c-bece-bc3be039c5e5",width: 70,),
                       ),
-                      child: Text("Next",style: Const.btntxt,),
-                      onPressed: () async {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => const Business_Logo()),
-                        );
-                        // if(_formkey.currentState!.validate())
-                        // {
-                        //
-                        // }else{
-                        //   print("UnSuccessfull");
-                        // }
-                      },
-                    ),
-                   Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 25, 0, 0),
-                      child: Image.network("https://firebasestorage.googleapis.com/v0/b/oneclx.appspot.com/o/asset%2Flogo%2Fimg2.png?alt=media&token=b8fcb386-3ab4-4f9c-bece-bc3be039c5e5",width: 70,),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
               ],
             ),
           ),

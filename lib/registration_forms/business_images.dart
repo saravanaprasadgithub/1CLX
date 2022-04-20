@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:one_clx/constants/constant.dart';
 import 'package:one_clx/registration_forms/publish.dart';
+import 'package:swipe_to/swipe_to.dart';
 
 class Business_Images extends StatefulWidget {
   const Business_Images({Key? key}) : super(key: key);
@@ -58,11 +59,11 @@ class _Business_ImagesState extends State<Business_Images> {
                   child: Image.network("https://firebasestorage.googleapis.com/v0/b/oneclx.appspot.com/o/asset%2Ficon%2FBI.png?alt=media&token=0d982904-2abe-4d03-811c-10364404ef8b",width: 70,)
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(20,10,20,10),
+                padding: const EdgeInsets.fromLTRB(20,20,20,10),
                 child: Center(child: Text('Business Images',style: Const.appbartxt,)),
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(20,30,20,2),
+                padding: const EdgeInsets.fromLTRB(20,60,20,2),
                 child: Align(child: Text("4 of 6 Completed",style: Const.OTPtxt,), alignment: Alignment.center,),
               ),
               Padding(
@@ -111,7 +112,7 @@ class _Business_ImagesState extends State<Business_Images> {
               SizedBox(height: 5,),
               Container(
                 height: 150,
-               // width: 150,
+                // width: 150,
                 child: ListView.builder(
                   shrinkWrap: true,
                   scrollDirection: Axis.horizontal,
@@ -154,32 +155,14 @@ class _Business_ImagesState extends State<Business_Images> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child:Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     Image.network("https://firebasestorage.googleapis.com/v0/b/oneclx.appspot.com/o/asset%2Flogo%2Fimg1.png?alt=media&token=8aa401b4-5635-451f-af67-3dcd82117797",width: 70,),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        onPrimary:const Color(0xff5F89D8) ,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5.0),
-                        ),
-                        primary: const Color(0xff5F89D8),
-                      ),
-                      child: Text("Previous",style: Const.btntxt,),
-                      onPressed: () async {
-                        Navigator.pop(context);
-                      },
-                    ),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        onPrimary:const Color(0xff5F89D8) ,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5.0),
-                        ),
-                        primary: const Color(0xff5F89D8),
-                      ),
-                      child: Text("Next",style: Const.btntxt,),
-                      onPressed: () async {
+                    Image.network("https://firebasestorage.googleapis.com/v0/b/oneclx.appspot.com/o/asset%2Flogo%2FLefi.png?alt=media&token=6ce0a918-d370-46ac-8569-13be12e85940",),
+                    SwipeTo(
+                      child: Text("Swipe",style: Const.common,),
+                      iconColor: Colors.transparent,
+                      onLeftSwipe: () async{
                         Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => const Publish()),
@@ -190,8 +173,50 @@ class _Business_ImagesState extends State<Business_Images> {
                         // }else{
                         //   print("UnSuccessfull");
                         // }
+
                       },
+                      onRightSwipe: ()async{
+                        Navigator.pop(context);
+                      },
+
                     ),
+                    Image.network("https://firebasestorage.googleapis.com/v0/b/oneclx.appspot.com/o/asset%2Flogo%2FRight.png?alt=media&token=6f429db7-33c2-4063-865b-f0f8417a4acc",),
+
+                    // ElevatedButton(
+                    //   style: ElevatedButton.styleFrom(
+                    //     onPrimary:const Color(0xff5F89D8) ,
+                    //     shape: RoundedRectangleBorder(
+                    //       borderRadius: BorderRadius.circular(5.0),
+                    //     ),
+                    //     primary: const Color(0xff5F89D8),
+                    //   ),
+                    //   child: Text("Previous",style: Const.btntxt,),
+                    //   onPressed: () async {
+                    //     Navigator.pop(context);
+                    //   },
+                    // ),
+                    // ElevatedButton(
+                    //   style: ElevatedButton.styleFrom(
+                    //     onPrimary:const Color(0xff5F89D8) ,
+                    //     shape: RoundedRectangleBorder(
+                    //       borderRadius: BorderRadius.circular(5.0),
+                    //     ),
+                    //     primary: const Color(0xff5F89D8),
+                    //   ),
+                    //   child: Text("Next",style: Const.btntxt,),
+                    //   onPressed: () async {
+                    //     Navigator.push(
+                    //       context,
+                    //       MaterialPageRoute(builder: (context) => const Publish()),
+                    //     );
+                    //     // if(_formkey.currentState!.validate())
+                    //     // {
+                    //     //
+                    //     // }else{
+                    //     //   print("UnSuccessfull");
+                    //     // }
+                    //   },
+                    // ),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(0, 25, 0, 0),
                       child: Image.network("https://firebasestorage.googleapis.com/v0/b/oneclx.appspot.com/o/asset%2Flogo%2Fimg2.png?alt=media&token=b8fcb386-3ab4-4f9c-bece-bc3be039c5e5",width: 70,),

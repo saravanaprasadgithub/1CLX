@@ -3,6 +3,7 @@ import 'package:csc_picker/csc_picker.dart';
 import 'package:flutter/services.dart';
 import 'package:one_clx/constants/constant.dart';
 import 'package:one_clx/registration_forms/google_location.dart';
+import 'package:swipe_to/swipe_to.dart';
 
 class Business_Location extends StatefulWidget {
   const Business_Location({Key? key}) : super(key: key);
@@ -21,26 +22,26 @@ class _Business_LocationState extends State<Business_Location> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor:  Color(0xffFFFFFF),
-      body: Form(
-        key: _formkey,
-        child: SingleChildScrollView(
-          child: Container(
-            decoration: BoxDecoration(
-                gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    stops: [
-                      0.0,
-                      0.1,
-                      0.3,
-                    ],
-                    colors: [
-                      Color(0xff385CB7),
-                      Color(0xff5F89D8),
-                      Color(0xffFFFFFF),
-                    ]
-                )
-            ),
+      body:SingleChildScrollView(
+        child: Container(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  stops: [
+                    0.0,
+                    0.1,
+                    0.3,
+                  ],
+                  colors: [
+                    Color(0xff385CB7),
+                    Color(0xff5F89D8),
+                    Color(0xffFFFFFF),
+                  ]
+              )
+          ),
+          child: Form(
+            key: _formkey,
             child: Column(
               children: [
                 Padding(
@@ -73,41 +74,41 @@ class _Business_LocationState extends State<Business_Location> {
                   padding: const EdgeInsets.fromLTRB(20,10,20,10),
                   child: Center(child: Text('ADD Business Location',style: Const.Normalbold,)),
                 ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(20,10,20,10),
-                child: CSCPicker(
-                  layout: Layout.vertical,
-                  dropdownDecoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                      color: Colors.white,
-                      border: Border.all(color: Color(0xff5F89D8), width: 1)),
-                  disabledDropdownDecoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                      color: Colors.white,
-                      border: Border.all(color: Color(0xff5F89D8), width: 1)),
-                  countryDropdownLabel: "Select Country",
-                  stateDropdownLabel: "State",
-                  cityDropdownLabel: "City",
-                  dropdownHeadingStyle:Const.Normal,
-                  selectedItemStyle: Const.Normal,
-                  dropdownItemStyle: Const.Normal,
-                  onCountryChanged: (value) {
-                    setState(() {
-                      countryValue = value;
-                    });
-                  },
-                  onStateChanged:(value) {
-                    setState(() {
-                      stateValue = value;
-                    });
-                  },
-                  onCityChanged:(value) {
-                    setState(() {
-                      cityValue = value;
-                    });
-                  },
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20,10,20,10),
+                  child: CSCPicker(
+                    layout: Layout.vertical,
+                    dropdownDecoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                        color: Colors.white,
+                        border: Border.all(color: Color(0xff5F89D8), width: 1)),
+                    disabledDropdownDecoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                        color: Colors.white,
+                        border: Border.all(color: Color(0xff5F89D8), width: 1)),
+                    countryDropdownLabel: "Select Country",
+                    stateDropdownLabel: "State",
+                    cityDropdownLabel: "City",
+                    dropdownHeadingStyle:Const.Normal,
+                    selectedItemStyle: Const.Normal,
+                    dropdownItemStyle: Const.Normal,
+                    onCountryChanged: (value) {
+                      setState(() {
+                        countryValue = value;
+                      });
+                    },
+                    onStateChanged:(value) {
+                      setState(() {
+                        stateValue = value;
+                      });
+                    },
+                    onCityChanged:(value) {
+                      setState(() {
+                        cityValue = value;
+                      });
+                    },
+                  ),
                 ),
-              ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(20,8,20,8),
                   child: TextFormField(
@@ -204,11 +205,11 @@ class _Business_LocationState extends State<Business_Location> {
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                       contentPadding: EdgeInsets.symmetric(vertical: 5,horizontal: 5),
-                        fillColor: Colors.white,
-                        filled: true,
-                        suffixIcon: Icon(Icons.phone_android_rounded,color: Const.iconclr),
-                        hintText: "Mobile Number",hintStyle: Const.txt,
-                        errorStyle: Const.errtxt,
+                      fillColor: Colors.white,
+                      filled: true,
+                      suffixIcon: Icon(Icons.phone_android_rounded,color: Const.iconclr),
+                      hintText: "Mobile Number",hintStyle: Const.txt,
+                      errorStyle: Const.errtxt,
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0),
                         borderSide: const BorderSide(color: Color(0xff5F89D8),width: 1),
@@ -240,81 +241,17 @@ class _Business_LocationState extends State<Business_Location> {
                     },
                   ),
                 ),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                //   children: [
-                //     Padding(
-                //       padding: const EdgeInsets.fromLTRB(20,8,20,8),
-                //       child: ElevatedButton(
-                //         style: ElevatedButton.styleFrom(
-                //           onPrimary:const Color(0xff5F89D8) ,
-                //           shape: RoundedRectangleBorder(
-                //             borderRadius: BorderRadius.circular(5.0),
-                //           ),
-                //           primary: const Color(0xff5F89D8),
-                //         ),
-                //         child: Text("Previous",style: Const.btntxt,),
-                //         onPressed: () async {
-                //         Navigator.pop(context);
-                //         },
-                //       ),
-                //     ),
-                //     Padding(
-                //       padding: const EdgeInsets.fromLTRB(20,8,20,8),
-                //       child: ElevatedButton(
-                //         style: ElevatedButton.styleFrom(
-                //           onPrimary:const Color(0xff5F89D8) ,
-                //           shape: RoundedRectangleBorder(
-                //             borderRadius: BorderRadius.circular(5.0),
-                //           ),
-                //           primary: const Color(0xff5F89D8),
-                //         ),
-                //         child: Text("Next",style: Const.btntxt,),
-                //         onPressed: () async {
-                //           Navigator.push(
-                //             context,
-                //             MaterialPageRoute(builder: (context) => const Google_Location()),
-                //           );
-                //           // if(_formkey.currentState!.validate())
-                //           // {
-                //           //
-                //           // }else{
-                //           //   print("UnSuccessfull");
-                //           // }
-                //         },
-                //       ),
-                //     ),
-                //   ],
-                // ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child:Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Image.network("https://firebasestorage.googleapis.com/v0/b/oneclx.appspot.com/o/asset%2Flogo%2Fimg1.png?alt=media&token=8aa401b4-5635-451f-af67-3dcd82117797",width: 70,),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          onPrimary:const Color(0xff5F89D8) ,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                          ),
-                          primary: const Color(0xff5F89D8),
-                        ),
-                        child: Text("Previous",style: Const.btntxt,),
-                        onPressed: () async {
-                          Navigator.pop(context);
-                        },
-                      ),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          onPrimary:const Color(0xff5F89D8) ,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                          ),
-                          primary: const Color(0xff5F89D8),
-                        ),
-                        child: Text("Next",style: Const.btntxt,),
-                        onPressed: () async {
+                      Image.network("https://firebasestorage.googleapis.com/v0/b/oneclx.appspot.com/o/asset%2Flogo%2FLefi.png?alt=media&token=6ce0a918-d370-46ac-8569-13be12e85940",),
+                      SwipeTo(
+                        child: Text("Swipe",style: Const.common,),
+                        iconColor: Colors.transparent,
+                        onLeftSwipe: () async{
                           Navigator.push(
                             context,
                             MaterialPageRoute(builder: (context) => const Google_Location()),
@@ -325,8 +262,14 @@ class _Business_LocationState extends State<Business_Location> {
                           // }else{
                           //   print("UnSuccessfull");
                           // }
+
                         },
+                        onRightSwipe: ()async{
+                          Navigator.pop(context);
+                        },
+
                       ),
+                      Image.network("https://firebasestorage.googleapis.com/v0/b/oneclx.appspot.com/o/asset%2Flogo%2FRight.png?alt=media&token=6f429db7-33c2-4063-865b-f0f8417a4acc",),
                       Padding(
                         padding: const EdgeInsets.fromLTRB(0, 25, 0, 0),
                         child: Image.network("https://firebasestorage.googleapis.com/v0/b/oneclx.appspot.com/o/asset%2Flogo%2Fimg2.png?alt=media&token=b8fcb386-3ab4-4f9c-bece-bc3be039c5e5",width: 70,),
