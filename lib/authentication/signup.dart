@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:one_clx/authentication/email_verification.dart';
+import 'package:one_clx/authentication/google_signin.dart';
 import 'package:one_clx/authentication/login.dart';
 import 'package:one_clx/constants/constant.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:one_clx/registration_forms/business_profile.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class signup extends StatefulWidget {
   const signup({Key? key}) : super(key: key);
@@ -18,6 +25,21 @@ class _signupState extends State<signup> {
   bool _obscureText = true;
   String? email,password,mobile,name;
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  final userid = FirebaseAuth.instance.currentUser;
+  SharedPreferences? logindata;
+
+  @override
+  void initState() {
+    super.initState();
+    initial();
+  }
+  void initial() async {
+    logindata = await SharedPreferences.getInstance();
+    setState(() {
+      email = logindata!.getString('email');
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -255,7 +277,48 @@ class _signupState extends State<signup> {
                                 onPressed: () async {
                                   if(_formkey.currentState!.validate())
                                   {
+                                    try{
+                                      await _firebaseAuth.createUserWithEmailAndPassword(
+                                          email: EmailCntrlr.text.trim(),
+                                          password: PasswordCntrlr.text.trim())
+                                          .then((value)
+                                      {
+                                        FirebaseFirestore.instance.collection("Users").doc(userid!.email).set(
+                                          {
+                                            'Name':NameCntrlr.text.trim(),
+                                            'Email':EmailCntrlr.text.trim(),
+                                            'Mobile_No':MobileCntrlr.text.trim(),
+                                            "Password":PasswordCntrlr.text.hashCode.toString(),
+                                          }
+                                        ).then((value) =>  Navigator.push(
+                                          context,
+                                          MaterialPageRoute(builder: (context) => const verify_email()),
+                                        ),
+                                        );
+                                      }).catchError((e){
+                                        Fluttertoast.showToast(
+                                            timeInSecForIosWeb: 1,
+                                            msg: "Email-ID Already Exist",
+                                            toastLength: Toast.LENGTH_SHORT,
+                                            gravity: ToastGravity.BOTTOM,
+                                            backgroundColor: Colors.deepOrange,
+                                            textColor: Colors.white
+                                        );
+                                      });
+                                    }
+                                    catch(e)
+                                    {
+                                      Fluttertoast.showToast(
+                                          timeInSecForIosWeb: 1,
+                                          msg: "No Internet Connectivity",
+                                          toastLength: Toast.LENGTH_SHORT,
+                                          gravity: ToastGravity.BOTTOM,
+                                          backgroundColor: Colors.deepPurple,
+                                          textColor: Colors.white
+                                      );
+                                    }
 
+                                    return;
                                   }else{
                                     print("UnSuccessfull");
                                   }
@@ -291,7 +354,14 @@ class _signupState extends State<signup> {
                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                 children: [
                                   Text('Sign Up with',style: Const.commonsignup,),
-                                  ElevatedButton(onPressed: (){},
+                                  ElevatedButton(onPressed: ()async{
+                                    await FirebaseServices().signInWithGoogle();
+                                    logindata!.setBool('login', false);
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => const Business_Profile()),
+                                    );
+                                  },
                                       style: ElevatedButton.styleFrom(
                                         shape: CircleBorder(),
                                         primary: Colors.white,

@@ -20,7 +20,7 @@ class _Business_ImagesState extends State<Business_Images> {
   List <XFile> ? images=[];
   Future pickImage() async{
     try{
-      final List <XFile> ? image= await ImagePicker().pickMultiImage();
+      final List <XFile> ? image= await ImagePicker().pickMultiImage(maxHeight: 300,maxWidth: 300);
       if(image==null)return;
       setState(() {
         images!.addAll(image);

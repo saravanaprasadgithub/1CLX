@@ -17,7 +17,7 @@ class _Business_HeaderState extends State<Business_Header> {
   File?logo;
   Future pickImage() async{
     try{
-      final image= await ImagePicker().pickImage(source: ImageSource.gallery);
+      final image= await ImagePicker().pickImage(source: ImageSource.gallery,maxHeight: 540,maxWidth: 540);
       if(image==null)return;
       final tempImage= File(image.path);
       setState(() {
