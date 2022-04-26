@@ -283,18 +283,21 @@ class _signupState extends State<signup> {
                                           password: PasswordCntrlr.text.trim())
                                           .then((value)
                                       {
-                                        FirebaseFirestore.instance.collection("Users").doc(userid!.email).set(
-                                          {
-                                            'Name':NameCntrlr.text.trim(),
-                                            'Email':EmailCntrlr.text.trim(),
-                                            'Mobile_No':MobileCntrlr.text.trim(),
-                                            "Password":PasswordCntrlr.text.hashCode.toString(),
-                                          }
-                                        ).then((value) =>  Navigator.push(
-                                          context,
-                                          MaterialPageRoute(builder: (context) => const verify_email()),
-                                        ),
-                                        );
+                                        Navigator.push(
+                                              context,
+                                              MaterialPageRoute(builder: (context) => const verify_email()));
+                                        // FirebaseFirestore.instance.collection("Users").doc(userid!.email).set(
+                                        //   {
+                                        //     'Name':NameCntrlr.text.trim(),
+                                        //     'Email':EmailCntrlr.text.trim(),
+                                        //     'Mobile_No':MobileCntrlr.text.trim(),
+                                        //     "Password":PasswordCntrlr.text.hashCode.toString(),
+                                        //   }
+                                        // ).then((value) =>  Navigator.push(
+                                        //   context,
+                                        //   MaterialPageRoute(builder: (context) => const verify_email()),
+                                        // ),
+                                        // );
                                       }).catchError((e){
                                         Fluttertoast.showToast(
                                             timeInSecForIosWeb: 1,

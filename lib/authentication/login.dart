@@ -1,14 +1,17 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:one_clx/authentication/email_verification.dart';
+import 'package:one_clx/authentication/facebook_signin.dart';
 import 'package:one_clx/authentication/google_signin.dart';
 import 'package:one_clx/authentication/signup.dart';
+import 'package:one_clx/authentication/twitter%20_signin.dart';
 import 'package:one_clx/constants/constant.dart';
 import 'package:one_clx/registration_forms/business_profile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 
 class login extends StatefulWidget {
   const login({Key? key}) : super(key: key);
@@ -34,7 +37,6 @@ class _loginState extends State<login> {
     check_if_already_login();
     super.initState();
   }
-
   void check_if_already_login() async {
     logindata = await SharedPreferences.getInstance();
     newuser = (logindata!.getBool('login') ?? true);
@@ -370,7 +372,14 @@ class _loginState extends State<login> {
                                             ),
                                             child: Image.network("https://firebasestorage.googleapis.com/v0/b/oneclx.appspot.com/o/asset%2Ficon%2FGicon.png?alt=media&token=77bcfaa4-662d-4503-8a0a-f31adadc9b57")
                                         ),
-                                        ElevatedButton(onPressed: (){},
+                                        ElevatedButton(onPressed: () async{
+                                          await facebook().facebooklogin();
+                                          logindata!.setBool('login', false);
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(builder: (context) => const Business_Profile()),
+                                          );
+                                        },
                                             style: ElevatedButton.styleFrom(
                                               shape: CircleBorder(),
                                               primary: Colors.white,
@@ -386,7 +395,14 @@ class _loginState extends State<login> {
                                             ),
                                             child: Image.network("https://firebasestorage.googleapis.com/v0/b/oneclx.appspot.com/o/asset%2Ficon%2FLicon.png?alt=media&token=456aa250-b8d1-4fb0-8fa1-cddc636a7e1d")
                                         ),
-                                        ElevatedButton(onPressed: (){},
+                                        ElevatedButton(onPressed: () async{
+                                          await twitter().twitterlogin();
+                                          logindata!.setBool('login', false);
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(builder: (context) => const Business_Profile()),
+                                          );
+                                        },
                                             style: ElevatedButton.styleFrom(
                                               shape: CircleBorder(),
                                               primary: Colors.white,

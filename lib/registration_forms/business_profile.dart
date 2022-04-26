@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:one_clx/authentication/facebook_signin.dart';
 import 'package:one_clx/authentication/google_signin.dart';
 import 'package:one_clx/authentication/login.dart';
+import 'package:one_clx/authentication/twitter%20_signin.dart';
 import 'package:one_clx/constants/constant.dart';
 import 'package:one_clx/registration_forms/business_location.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -55,7 +57,9 @@ class _Business_ProfileState extends State<Business_Profile> {
                 primary: const Color(0xff5F89D8),
               ),
               onPressed: () async{
-                await FirebaseServices().googleSignOut();
+                //await FirebaseServices().googleSignOut();
+                 await twitter().twitterlogout();
+                //await facebook().facebooklogout();
                 logindata!.setBool('login', true);//maintain login data
                 Navigator.push(context, MaterialPageRoute(builder: (context) => const login()),);
               },
