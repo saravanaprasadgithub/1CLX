@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">one_clx</string>string>
-    <string name="facebook_app_id">549379930159444</string>
-    <string name="fb_login_protocol_scheme">fb549379930159444</string>
-    <string name="facebook_client_token">b1fdbf9b591c57cf96f14ea4ced932d7</string>
+    <string name="facebook_app_id">533410064965248</string>
+    <string name="fb_login_protocol_scheme">fb533410064965248</string>
+    <string name="facebook_client_token">60f4ea6c4871ddb8238fee9cad9e11a9</string>
 </resources>

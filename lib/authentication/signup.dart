@@ -169,18 +169,15 @@ class _signupState extends State<signup> {
                             Padding(
                               padding: const EdgeInsets.fromLTRB(20,0,20,0),
                               child: TextFormField(
-                                inputFormatters: [
-                                  FilteringTextInputFormatter.digitsOnly
-                                ],
                                 style: Const.Normal,
                                 controller: MobileCntrlr,
-                                keyboardType: TextInputType.number,
+                                keyboardType: TextInputType.phone,
                                 decoration: InputDecoration(
                                   contentPadding: EdgeInsets.symmetric(vertical: 5,horizontal: 5),
                                   fillColor: Colors.white,
                                   filled: true,
                                   suffixIcon: Icon(Icons.phone_android_rounded,color: Const.iconclr),
-                                  hintText: "Mobile Number",hintStyle: Const.txt,
+                                  hintText: "+91**********",hintStyle: Const.txt,
                                   errorStyle: Const.errtxt,
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(35.0),
@@ -203,8 +200,8 @@ class _signupState extends State<signup> {
                                   if(value!.isEmpty){
                                     return 'Enter Mobile No';
                                   }
-                                  if(value.length<=9||value.length>10){
-                                    return 'Mobile.No has 10 digits';
+                                  if(!RegExp(r'^(?:[+0][1-9])?[0-9]{10,12}$').hasMatch(value)){
+                                    return 'Enter MobileNo With Country Code';
                                   }
                                   return null;
                                 },
@@ -277,51 +274,84 @@ class _signupState extends State<signup> {
                                 onPressed: () async {
                                   if(_formkey.currentState!.validate())
                                   {
-                                    try{
-                                      await _firebaseAuth.createUserWithEmailAndPassword(
-                                          email: EmailCntrlr.text.trim(),
-                                          password: PasswordCntrlr.text.trim())
-                                          .then((value)
-                                      {
-                                        Navigator.push(
-                                              context,
-                                              MaterialPageRoute(builder: (context) => const verify_email()));
-                                        // FirebaseFirestore.instance.collection("Users").doc(userid!.email).set(
-                                        //   {
-                                        //     'Name':NameCntrlr.text.trim(),
-                                        //     'Email':EmailCntrlr.text.trim(),
-                                        //     'Mobile_No':MobileCntrlr.text.trim(),
-                                        //     "Password":PasswordCntrlr.text.hashCode.toString(),
-                                        //   }
-                                        // ).then((value) =>  Navigator.push(
-                                        //   context,
-                                        //   MaterialPageRoute(builder: (context) => const verify_email()),
-                                        // ),
-                                        // );
-                                      }).catchError((e){
+                                    try {
+                                      UserCredential user = await _firebaseAuth.createUserWithEmailAndPassword(email: EmailCntrlr.text.trim(), password: PasswordCntrlr.text.trim());
+                                      if(user!=null){
+                                        await FirebaseFirestore.instance.collection("Users").doc(EmailCntrlr.text.trim()).set({
+                                          'Name':NameCntrlr.text.trim(),
+                                          'Email':EmailCntrlr.text.trim(),
+                                          'Mobile_No':MobileCntrlr.text.trim(),
+                                          "Password":PasswordCntrlr.text.trim(),
+                                        }).then((value) => Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(builder: (context) => const verify_email()),
+                                                ),
+                                                );
+                                      }else{
                                         Fluttertoast.showToast(
                                             timeInSecForIosWeb: 1,
-                                            msg: "Email-ID Already Exist",
+                                            msg: "User Not Added",
                                             toastLength: Toast.LENGTH_SHORT,
                                             gravity: ToastGravity.BOTTOM,
                                             backgroundColor: Colors.deepOrange,
                                             textColor: Colors.white
                                         );
-                                      });
-                                    }
-                                    catch(e)
-                                    {
+                                      }
+                                    } on Exception catch (e) {
                                       Fluttertoast.showToast(
                                           timeInSecForIosWeb: 1,
-                                          msg: "No Internet Connectivity",
+                                          msg: "Email-ID Already Exist",
                                           toastLength: Toast.LENGTH_SHORT,
                                           gravity: ToastGravity.BOTTOM,
-                                          backgroundColor: Colors.deepPurple,
+                                          backgroundColor: Colors.deepOrange,
                                           textColor: Colors.white
                                       );
                                     }
-
-                                    return;
+                                    // try{
+                                    //   await _firebaseAuth.createUserWithEmailAndPassword(
+                                    //       email: EmailCntrlr.text.trim(),
+                                    //       password: PasswordCntrlr.text.trim())
+                                    //       .then((value)
+                                    //   {
+                                    //     Navigator.push(
+                                    //           context,
+                                    //           MaterialPageRoute(builder: (context) => const verify_email()));
+                                    //     // FirebaseFirestore.instance.collection("Users").doc(userid!.email).set(
+                                    //     //   {
+                                    //     //     'Name':NameCntrlr.text.trim(),
+                                    //     //     'Email':EmailCntrlr.text.trim(),
+                                    //     //     'Mobile_No':MobileCntrlr.text.trim(),
+                                    //     //     "Password":PasswordCntrlr.text.hashCode.toString(),
+                                    //     //   }
+                                    //     // ).then((value) =>  Navigator.push(
+                                    //     //   context,
+                                    //     //   MaterialPageRoute(builder: (context) => const verify_email()),
+                                    //     // ),
+                                    //     // );
+                                    //   }).catchError((e){
+                                    //     Fluttertoast.showToast(
+                                    //         timeInSecForIosWeb: 1,
+                                    //         msg: "Email-ID Already Exist",
+                                    //         toastLength: Toast.LENGTH_SHORT,
+                                    //         gravity: ToastGravity.BOTTOM,
+                                    //         backgroundColor: Colors.deepOrange,
+                                    //         textColor: Colors.white
+                                    //     );
+                                      // });
+                                    // }
+                                    // catch(e)
+                                    // {
+                                    //   Fluttertoast.showToast(
+                                    //       timeInSecForIosWeb: 1,
+                                    //       msg: "No Internet Connectivity",
+                                    //       toastLength: Toast.LENGTH_SHORT,
+                                    //       gravity: ToastGravity.BOTTOM,
+                                    //       backgroundColor: Colors.deepPurple,
+                                    //       textColor: Colors.white
+                                    //   );
+                                    // }
+                                    //
+                                    // return;
                                   }else{
                                     print("UnSuccessfull");
                                   }

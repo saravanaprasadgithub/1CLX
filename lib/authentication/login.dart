@@ -1,17 +1,18 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:one_clx/authentication/OTP_form.dart';
 import 'package:one_clx/authentication/email_verification.dart';
 import 'package:one_clx/authentication/facebook_signin.dart';
+import 'package:one_clx/authentication/forgot_password.dart';
 import 'package:one_clx/authentication/google_signin.dart';
+import 'package:one_clx/authentication/linkedin_signin.dart';
 import 'package:one_clx/authentication/signup.dart';
 import 'package:one_clx/authentication/twitter%20_signin.dart';
 import 'package:one_clx/constants/constant.dart';
 import 'package:one_clx/registration_forms/business_profile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 
 class login extends StatefulWidget {
   const login({Key? key}) : super(key: key);
@@ -248,10 +249,10 @@ class _loginState extends State<login> {
                                             TextButton(
                                               child: Text('Forgot Password?',style:Const.common,),
                                               onPressed: (){
-                                                // Navigator.push(
-                                                //   context,
-                                                //   MaterialPageRoute(builder: (context) => const forgot_password()),
-                                                // );
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(builder: (context) => const forgot_password()),
+                                                );
                                               },
                                             ),
                                           ],),
@@ -373,21 +374,26 @@ class _loginState extends State<login> {
                                             child: Image.network("https://firebasestorage.googleapis.com/v0/b/oneclx.appspot.com/o/asset%2Ficon%2FGicon.png?alt=media&token=77bcfaa4-662d-4503-8a0a-f31adadc9b57")
                                         ),
                                         ElevatedButton(onPressed: () async{
-                                          await facebook().facebooklogin();
-                                          logindata!.setBool('login', false);
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(builder: (context) => const Business_Profile()),
-                                          );
+                                          // await facebook().facebooklogin();
+                                          // logindata!.setBool('login', false);
+                                          // Navigator.push(
+                                          //   context,
+                                          //   MaterialPageRoute(builder: (context) => const Business_Profile()),
+                                          // );
                                         },
                                             style: ElevatedButton.styleFrom(
                                               shape: CircleBorder(),
                                               primary: Colors.white,
                                               fixedSize: Size(50,50),
                                             ),
-                                            child: Image.network("https://firebasestorage.googleapis.com/v0/b/oneclx.appspot.com/o/asset%2Ficon%2FFicon.png?alt=media&token=01d5ecea-1d57-4058-b958-db340ebb877f")
+                                             child: Image.network("https://firebasestorage.googleapis.com/v0/b/oneclx.appspot.com/o/asset%2Ficon%2FFicon.png?alt=media&token=01d5ecea-1d57-4058-b958-db340ebb877f")
                                         ),
-                                        ElevatedButton(onPressed: (){},
+                                        ElevatedButton(onPressed: ()async{
+                                          // Navigator.push(
+                                          //   context,
+                                          //   MaterialPageRoute(builder: (context) => const linkedin()),
+                                          // );
+                                        },
                                             style: ElevatedButton.styleFrom(
                                               shape: CircleBorder(),
                                               primary: Colors.white,
@@ -440,12 +446,9 @@ class _loginState extends State<login> {
                                     child: Padding(
                                       padding: const EdgeInsets.fromLTRB(20,0,20,0),
                                       child: TextFormField(
-                                        inputFormatters: [
-                                          FilteringTextInputFormatter.digitsOnly
-                                        ],
                                         style: Const.Normal,
                                         controller: MobileCntrlr,
-                                        keyboardType: TextInputType.number,
+                                        keyboardType: TextInputType.phone,
                                         decoration: InputDecoration(
                                           contentPadding: EdgeInsets.symmetric(vertical: 5,horizontal: 5),
                                           fillColor: Colors.white,
@@ -460,14 +463,17 @@ class _loginState extends State<login> {
                                             onPressed: ()async {
                                               if(_formkey2.currentState!.validate())
                                               {
-
+                                                Navigator.push(
+                                                              context,
+                                                              MaterialPageRoute(builder: (context) => otp(MobileCntrlr.text)),
+                                                            );
                                               }else{
                                                 print("UnSuccessfull");
                                               }
                                             },
                                             child: Text('Request OTP',style:Const.OTPtxt,),
                                           ),
-                                          hintText: "Mobile Number",hintStyle: Const.txt,
+                                          hintText: "+91**********",hintStyle: Const.txt,
                                           errorStyle: Const.errtxt,
                                           focusedBorder: OutlineInputBorder(
                                             borderRadius: BorderRadius.circular(35.0),
@@ -490,8 +496,8 @@ class _loginState extends State<login> {
                                           if(value!.isEmpty){
                                             return 'Enter Mobile No';
                                           }
-                                          if(value.length<=9||value.length>10){
-                                            return 'Mobile.No has 10 digits';
+                                          if(!RegExp(r'^(?:[+0][1-9])?[0-9]{10,12}$').hasMatch(value)){
+                                            return 'Enter MobileNo With Country Code';
                                           }
                                           return null;
                                         },
