@@ -17,7 +17,7 @@ class _Business_LocationState extends State<Business_Location> {
   TextEditingController MobileCntrlr = TextEditingController();
   TextEditingController PincodeCntrlr = TextEditingController();
   TextEditingController AddressCntrlr = TextEditingController();
-  String? countryValue,stateValue,mobile,cityValue,pincode,address;
+  String? countryValue,stateValue,mobile,cityValue,pincode,address,dropdownError1,dropdownError2,dropdownError3;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -100,19 +100,40 @@ class _Business_LocationState extends State<Business_Location> {
                       onCountryChanged: (value) {
                         setState(() {
                           countryValue = value;
+                          dropdownError1=null;
                         });
                       },
                       onStateChanged:(value) {
                         setState(() {
                           stateValue = value;
+                          dropdownError2=null;
                         });
                       },
                       onCityChanged:(value) {
                         setState(() {
                           cityValue = value;
+                          dropdownError3=null;
                         });
                       },
                     ),
+                  ),
+                  dropdownError1 == null
+                      ? SizedBox.shrink()
+                      : Text(
+                    dropdownError1 ?? "",
+                    style:Const.errtxt,
+                  ),
+                  dropdownError2 == null
+                      ? SizedBox.shrink()
+                      : Text(
+                    dropdownError2 ?? "",
+                    style: Const.errtxt,
+                  ),
+                  dropdownError3 == null
+                      ? SizedBox.shrink()
+                      : Text(
+                    dropdownError3 ?? "",
+                    style: Const.errtxt,
                   ),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(20,8,20,8),
@@ -261,10 +282,28 @@ class _Business_LocationState extends State<Business_Location> {
                               context,
                               MaterialPageRoute(builder: (context) => const Google_Location()),
                             );
-                            // if(_formkey.currentState!.validate())
+                            // if(_formkey.currentState!.validate() && countryValue!=null && stateValue!=null && cityValue!=null)
                             // {
-                            //
-                            // }else{
+                            // Navigator.push(
+                            //   context,
+                            //   MaterialPageRoute(builder: (context) => const Google_Location()),
+                            // );
+                            // } else if(countryValue==null ){
+                            //   setState(() {
+                            //     dropdownError1="Please Select Country..!!";
+                            //   });
+                            // }
+                            // else if(stateValue==null){
+                            //   setState(() {
+                            //     dropdownError2="Please Select State..!!";
+                            //   });
+                            // }
+                            // else if(cityValue==null ){
+                            //   setState(() {
+                            //     dropdownError3="Please Select City..!!";
+                            //   });
+                            // }
+                            // else{
                             //   print("UnSuccessfull");
                             // }
 

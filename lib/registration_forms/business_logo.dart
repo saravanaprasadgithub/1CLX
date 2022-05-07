@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:one_clx/constants/constant.dart';
 import 'package:one_clx/registration_forms/business_headerimage.dart';
 import 'package:image_picker/image_picker.dart';
@@ -119,7 +120,7 @@ class _Business_LogoState extends State<Business_Logo> {
                       height: 150,
                       width: 150,
                       color: Color(0xffF1F1F1),
-                      child: logo!=null?Image.file(logo!,fit: BoxFit.cover,):Center(child: Text('Image',style: Const.txt,)),
+                      child: logo!=null?Image.file(logo!,fit: BoxFit.fill,):Center(child: Text('Image',style: Const.txt,)),
                     ),
                     Positioned(
                         top: 0.0,
@@ -156,11 +157,21 @@ class _Business_LogoState extends State<Business_Logo> {
                           context,
                           MaterialPageRoute(builder: (context) => const Business_Header()),
                         );
-                        // if(_formkey.currentState!.validate())
+                        // if(logo!=null)
                         // {
-                        //
+                        //   Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(builder: (context) => const Business_Header()),
+                        //   );
                         // }else{
-                        //   print("UnSuccessfull");
+                        //   Fluttertoast.showToast(
+                        //       timeInSecForIosWeb: 1,
+                        //       msg: "Please Add Your Logo",
+                        //       toastLength: Toast.LENGTH_SHORT,
+                        //       gravity: ToastGravity.BOTTOM,
+                        //       backgroundColor: Colors.deepOrange,
+                        //       textColor: Colors.white
+                        //   );
                         // }
 
                       },

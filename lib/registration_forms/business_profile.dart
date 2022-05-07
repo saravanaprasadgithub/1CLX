@@ -57,13 +57,8 @@ class _Business_ProfileState extends State<Business_Profile> {
                 primary: const Color(0xff5F89D8),
               ),
               onPressed: () async{
-                //await FirebaseServices().googleSignOut();
-                 await twitter().twitterlogout();
-                //await facebook().facebooklogout();
-                logindata!.setBool('login', true);//maintain login data
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const login()),);
+                 Navigator.of(context).pop(false);
               },
-                  // Navigator.of(context).pop(false),
               //return false when click on "NO"
               child:Text('No',style: Const.whitetext,),
             ),
@@ -78,9 +73,12 @@ class _Business_ProfileState extends State<Business_Profile> {
                 primary: const Color(0xff5F89D8),
               ),
               onPressed: () {
+                //await FirebaseServices().googleSignOut();
+                //await twitter().twitterlogout();
+                //await facebook().facebooklogout();
                 logindata!.setBool('login', true);//maintain login data
                 Navigator.push(context, MaterialPageRoute(builder: (context) => const login()),);
-      },
+                   },
               //return true when click on "Yes"
               child:Text('Yes',style: Const.whitetext,),
             ),
@@ -300,11 +298,13 @@ class _Business_ProfileState extends State<Business_Profile> {
                                  );
                                  // if(_formkey.currentState!.validate())
                                  // {
-                                 //
+                                 //   Navigator.push(
+                                 //     context,
+                                 //     MaterialPageRoute(builder: (context) => const Business_Location()),
+                                 //   );
                                  // }else{
                                  //   print("UnSuccessfull");
                                  // }
-
                                },
                                onRightSwipe: ()async{
                                  showExitPopup();

@@ -49,6 +49,8 @@ dependencies:
   flutter_facebook_auth: ^4.3.0
   twitter_login: ^4.2.2
   linkedin_login: ^2.2.1
+  geolocator: ^8.2.1
+  permission_handler: ^9.2.0
 
 dev_dependencies:
   flutter_test:

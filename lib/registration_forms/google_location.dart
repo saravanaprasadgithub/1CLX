@@ -1,9 +1,12 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:one_clx/constants/constant.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:one_clx/registration_forms/business_description.dart';
 import 'package:swipe_to/swipe_to.dart';
+import 'package:geolocator/geolocator.dart';
 
 class Google_Location extends StatefulWidget {
   const Google_Location({Key? key}) : super(key: key);
@@ -13,15 +16,56 @@ class Google_Location extends StatefulWidget {
 }
 
 class _Google_LocationState extends State<Google_Location> {
-  GoogleMapController? controller;
+  Completer<GoogleMapController>_controllerGoogleMap=Completer();
+  GoogleMapController? newGoogleMapController;
   Set<Marker> _markers={};
   final CameraPosition initialPosition =
-  CameraPosition(target: LatLng(11.342423, 77.728165));
-  var typemap = MapType.normal;
-  var cordinate1 = 'cordinate';
-  var lat = 19.060617;
-  var long = 72.848791;
+  CameraPosition(target: LatLng(11.342423, 77.728165),zoom: 14);
+  var lat = 11.342423;
+  var long = 77.72816;
   var address = "";
+  Position? currentPostion;
+
+
+  Future _getGeoLocationPosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    // Test if location services are enabled.
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      // Location services are not enabled don't continue
+      // accessing the position and request users of the
+      // App to enable the location services.
+      await Geolocator.openLocationSettings();
+      return Future.error('Location services are disabled.');
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      // Permissions are denied forever, handle appropriately.
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
+    }
+    locatePosition();
+    // When we reach here, permissions are granted and we can
+    // continue accessing the position of the device.
+  }
+  void locatePosition()async{
+    Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    currentPostion=position;
+    LatLng LatLngPosition= LatLng(position.latitude,position.longitude);
+    CameraPosition cameraPosition = new CameraPosition(target: LatLngPosition,zoom: 14);
+    newGoogleMapController!.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
+  }
   Future<void> getAddress(latt, longg) async {
     List<Placemark> placemark = await placemarkFromCoordinates(latt, longg);
     print(
@@ -33,10 +77,15 @@ class _Google_LocationState extends State<Google_Location> {
     Placemark place = placemark[0];
     setState(() {
       address =
-      '${place.street}, ${place.subLocality}, ${place.locality},${place.administrativeArea},${place.postalCode}, ${place.country}';
+      '${place.street}, ${place.subLocality}, ${place.subAdministrativeArea},${place.administrativeArea},${place.locality}${place.postalCode}, ${place.country}';
     });
   }
-
+  @override
+  void initState() {
+    _getGeoLocationPosition();
+    // locatePosition();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -99,34 +148,35 @@ class _Google_LocationState extends State<Google_Location> {
                     child: Center(child: Text('Add Map Location For Your Business',style: Const.Normal,)),
                   ),
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(20,10,20,10),
+                    padding: const EdgeInsets.fromLTRB(10,10,10,10),
                     child: ClipRRect(
                       borderRadius: BorderRadius.all(Radius.circular(15)),
                       child: Container(
                         height: 200,
                         child: GoogleMap(
+                          myLocationEnabled: true,
+                          zoomGesturesEnabled: true,
+                          zoomControlsEnabled: true,
                           myLocationButtonEnabled: true,
                           initialCameraPosition: initialPosition,
-                          mapType: typemap,
-                          onMapCreated: (controller) {
-                            setState(() {
-                              controller = controller;
-                            });
+                          mapType: MapType.normal,
+                          onMapCreated: (GoogleMapController controller) {
+                            _controllerGoogleMap.complete(controller);
+                            newGoogleMapController=controller;
+                            locatePosition();
                           },
                           markers: _markers,
-                          onTap: (cordinate) {
+                          onTap: (cordinate) async{
                             setState(() {
                               _markers.add(
                                   Marker(markerId: MarkerId('Home'),
-                                      position: LatLng(cordinate.latitude, cordinate.longitude)
+                                      position: LatLng(cordinate.latitude,cordinate.longitude)
                                   ));
-                              lat = cordinate.latitude;
-                              long = cordinate.longitude;
-                              getAddress(lat, long);
-                              cordinate1 = cordinate.toString();
+                               lat = cordinate.latitude;
+                               long = cordinate.longitude;
+                               getAddress(lat, long);
                             });
                             print(address);
-                            print(cordinate1);
                           },
                         ),
                       ),
@@ -159,7 +209,14 @@ class _Google_LocationState extends State<Google_Location> {
                               //     MaterialPageRoute(builder: (context) => const Business_Description()),
                               //   );
                               // }else{
-                              //
+                              //     Fluttertoast.showToast(
+                              //         timeInSecForIosWeb: 1,
+                              //         msg: "Pin Your Location Address",
+                              //         toastLength: Toast.LENGTH_SHORT,
+                              //         gravity: ToastGravity.BOTTOM,
+                              //         backgroundColor: Colors.deepOrange,
+                              //         textColor: Colors.white
+                              //     );
                               // }
 
                             },

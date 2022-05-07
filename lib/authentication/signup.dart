@@ -4,6 +4,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:one_clx/authentication/email_verification.dart';
 import 'package:one_clx/authentication/google_signin.dart';
 import 'package:one_clx/authentication/login.dart';
+import 'package:one_clx/authentication/twitter%20_signin.dart';
 import 'package:one_clx/constants/constant.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -418,7 +419,14 @@ class _signupState extends State<signup> {
                                       ),
                                       child: Image.network("https://firebasestorage.googleapis.com/v0/b/oneclx.appspot.com/o/asset%2Ficon%2FLicon.png?alt=media&token=456aa250-b8d1-4fb0-8fa1-cddc636a7e1d")
                                   ),
-                                  ElevatedButton(onPressed: (){},
+                                  ElevatedButton(onPressed: ()async{
+                                    await twitter().twitterlogin();
+                                    logindata!.setBool('login', false);
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => const Business_Profile()),
+                                    );
+                                  },
                                       style: ElevatedButton.styleFrom(
                                         shape: CircleBorder(),
                                         primary: Colors.white,

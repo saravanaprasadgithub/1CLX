@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:one_clx/authentication/login.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class splash extends StatefulWidget {
   const splash({Key? key}) : super(key: key);
@@ -11,15 +13,49 @@ class splash extends StatefulWidget {
 
 class _splashState extends State<splash> {
   @override
+  Future<void> requestLocationPermission() async {
+
+    final serviceStatusLocation = await Permission.locationWhenInUse.isGranted ;
+
+    bool isLocation = serviceStatusLocation == ServiceStatus.enabled;
+
+    final status = await Permission.locationWhenInUse.request();
+
+    if (status == PermissionStatus.granted) {
+      print('Permission Granted');
+      Timer(Duration(seconds: 5),
+              ()=>Navigator.pushReplacement(context,
+              MaterialPageRoute(builder:
+                  (context) => login()
+              )
+          )
+      );
+    } else if (status == PermissionStatus.denied) {
+          Fluttertoast.showToast(
+              timeInSecForIosWeb: 1,
+              msg: "Enable Location Permission",
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.BOTTOM,
+              backgroundColor: Colors.deepOrange,
+              textColor: Colors.white
+          );
+      print('Permission denied');
+    } else if (status == PermissionStatus.permanentlyDenied) {
+      Fluttertoast.showToast(
+          timeInSecForIosWeb: 1,
+          msg: "Enable Location Permission Always",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.deepOrange,
+          textColor: Colors.white
+      );
+      print('Permission Permanently Denied');
+      await openAppSettings();
+    }
+  }
   void initState() {
     super.initState();
-    Timer(Duration(seconds: 5),
-            ()=>Navigator.pushReplacement(context,
-            MaterialPageRoute(builder:
-                (context) => login()
-            )
-        )
-    );
+    requestLocationPermission();
   }
   @override
   Widget build(BuildContext context) {

@@ -1,8 +1,7 @@
 import 'dart:io';
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:one_clx/constants/constant.dart';
 import 'package:one_clx/registration_forms/publish.dart';
@@ -16,7 +15,6 @@ class Business_Images extends StatefulWidget {
 }
 
 class _Business_ImagesState extends State<Business_Images> {
-  File?logo;
   List <XFile> ? images=[];
   Future pickImage() async{
     try{
@@ -129,7 +127,7 @@ class _Business_ImagesState extends State<Business_Images> {
                             height: 150,
                             width: 150,
                             color: Color(0xffF1F1F1),
-                            child: images!.isNotEmpty?Image.file(File(images![index].path),fit: BoxFit.cover,):Center(child: Text('Image',style: Const.txt,)),
+                            child: images!.isNotEmpty?Image.file(File(images![index].path),fit: BoxFit.fill,):Center(child: Text('Image',style: Const.txt,)),
                           ),
                           Positioned(
                               top: 0.0,
@@ -170,13 +168,23 @@ class _Business_ImagesState extends State<Business_Images> {
                           context,
                           MaterialPageRoute(builder: (context) => const Publish()),
                         );
-                        // if(_formkey.currentState!.validate())
+                        // if(images!.length>2)
                         // {
-                        //
-                        // }else{
-                        //   print("UnSuccessfull");
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(builder: (context) => const Publish()),
+                        // );
                         // }
-
+                        // else{
+                        //     Fluttertoast.showToast(
+                        //         timeInSecForIosWeb: 1,
+                        //         msg: "Please Add Atleast 3 Images",
+                        //         toastLength: Toast.LENGTH_SHORT,
+                        //         gravity: ToastGravity.BOTTOM,
+                        //         backgroundColor: Colors.deepOrange,
+                        //         textColor: Colors.white
+                        //     );
+                        // }
                       },
                       onRightSwipe: ()async{
                         Navigator.pop(context);

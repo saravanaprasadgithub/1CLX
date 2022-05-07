@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:one_clx/constants/constant.dart';
 import 'package:one_clx/registration_forms/business_images.dart';
 import 'package:image_picker/image_picker.dart';
@@ -119,7 +120,7 @@ class _Business_HeaderState extends State<Business_Header> {
                       height: 150,
                       width: 150,
                       color: Color(0xffF1F1F1),
-                      child: logo!=null?Image.file(logo!,fit: BoxFit.cover,):Center(child: Text('Image',style: Const.txt,)),
+                      child: logo!=null?Image.file(logo!,fit: BoxFit.fill,):Center(child: Text('Image',style: Const.txt,)),
                     ),
                     Positioned(
                         top: 0.0,
@@ -156,11 +157,22 @@ class _Business_HeaderState extends State<Business_Header> {
                           context,
                           MaterialPageRoute(builder: (context) => const Business_Images()),
                         );
-                        // if(_formkey.currentState!.validate())
+                        // if(logo!=null)
                         // {
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(builder: (context) => const Business_Images()),
+                        // );
                         //
                         // }else{
-                        //   print("UnSuccessfull");
+                        //     Fluttertoast.showToast(
+                        //         timeInSecForIosWeb: 1,
+                        //         msg: "Please Add Header Image",
+                        //         toastLength: Toast.LENGTH_SHORT,
+                        //         gravity: ToastGravity.BOTTOM,
+                        //         backgroundColor: Colors.deepOrange,
+                        //         textColor: Colors.white
+                        //     );
                         // }
 
                       },
