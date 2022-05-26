@@ -4,7 +4,7 @@ import 'package:one_clx/authentication/login.dart';
 import 'package:one_clx/constants/constant.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:one_clx/registration_forms/business_profile.dart';
-
+//import 'package:sizer/sizer.dart';
 class otp extends StatefulWidget {
  final String phone;
   const otp(this.phone,{Key? key,}) : super(key: key);

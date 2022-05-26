@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:one_clx/constants/constant.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:swipe_to/swipe_to.dart';
 
 class Website_Created extends StatefulWidget {
@@ -10,6 +11,19 @@ class Website_Created extends StatefulWidget {
 }
 
 class _Website_CreatedState extends State<Website_Created> {
+  SharedPreferences?logindata;
+  String?businessName;
+  @override
+  void initState() {
+    getdata();
+    super.initState();
+  }
+  getdata()async{
+    logindata=await SharedPreferences.getInstance();
+    setState(() {
+      businessName=logindata?.getString('businessName');
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,7 +65,7 @@ class _Website_CreatedState extends State<Website_Created> {
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(20,0,20,0),
-                  child: Center(child: Text("https://www.1clx.com/businessname",style: Const.Normal,textAlign: TextAlign.center,)),
+                  child: Center(child: Text("https://www.1clx.com/${businessName}",style: Const.Normal,textAlign: TextAlign.center,)),
                 ),
                 SizedBox(height: 5,),
                 Padding(

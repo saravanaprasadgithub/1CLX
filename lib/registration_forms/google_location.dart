@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:one_clx/constants/constant.dart';
@@ -16,6 +18,8 @@ class Google_Location extends StatefulWidget {
 }
 
 class _Google_LocationState extends State<Google_Location> {
+  final userid = FirebaseAuth.instance.currentUser;
+  final firestoreInstance = FirebaseFirestore.instance;
   Completer<GoogleMapController>_controllerGoogleMap=Completer();
   GoogleMapController? newGoogleMapController;
   Set<Marker> _markers={};
@@ -204,10 +208,37 @@ class _Google_LocationState extends State<Google_Location> {
                               ) ;
                               // if(address.isNotEmpty)
                               // {
-                              //   Navigator.push(
-                              //     context,
-                              //     MaterialPageRoute(builder: (context) => const Business_Description()),
-                              //   );
+                              //   try {
+                              //     firestoreInstance.collection("Business Details").doc(userid!.email).update(
+                              //         {
+                              //          'GoogleAddress':address.toString()
+                              //         }
+                              //     ).then((value) => {
+                              //       Navigator.push(
+                              //         context,
+                              //         MaterialPageRoute(builder: (context) => const Business_Description()),
+                              //       ),
+                              //     });
+                              //     Fluttertoast.showToast(
+                              //         timeInSecForIosWeb: 1,
+                              //         msg: "Your Details Submitted Successfully..!!!",
+                              //         toastLength: Toast.LENGTH_SHORT,
+                              //         gravity: ToastGravity.BOTTOM,
+                              //         backgroundColor: Colors.deepPurple,
+                              //         textColor: Colors.white
+                              //     );
+                              //
+                              //   } catch (e) {
+                              //     Fluttertoast.showToast(
+                              //         timeInSecForIosWeb: 1,
+                              //         msg: "Values Not Stored",
+                              //         toastLength: Toast.LENGTH_SHORT,
+                              //         gravity: ToastGravity.BOTTOM,
+                              //         backgroundColor: Colors.deepOrange,
+                              //         textColor: Colors.white
+                              //     );
+                              //   }
+                              //   return;
                               // }else{
                               //     Fluttertoast.showToast(
                               //         timeInSecForIosWeb: 1,

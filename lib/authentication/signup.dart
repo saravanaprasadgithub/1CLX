@@ -10,6 +10,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:one_clx/registration_forms/business_profile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+//import 'package:sizer/sizer.dart';
 
 class signup extends StatefulWidget {
   const signup({Key? key}) : super(key: key);

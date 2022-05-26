@@ -1,6 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:csc_picker/csc_picker.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:one_clx/constants/constant.dart';
 import 'package:one_clx/registration_forms/google_location.dart';
 import 'package:swipe_to/swipe_to.dart';
@@ -17,6 +20,8 @@ class _Business_LocationState extends State<Business_Location> {
   TextEditingController MobileCntrlr = TextEditingController();
   TextEditingController PincodeCntrlr = TextEditingController();
   TextEditingController AddressCntrlr = TextEditingController();
+  final userid = FirebaseAuth.instance.currentUser;
+  final firestoreInstance = FirebaseFirestore.instance;
   String? countryValue,stateValue,mobile,cityValue,pincode,address,dropdownError1,dropdownError2,dropdownError3;
   @override
   Widget build(BuildContext context) {
@@ -284,10 +289,39 @@ class _Business_LocationState extends State<Business_Location> {
                             );
                             // if(_formkey.currentState!.validate() && countryValue!=null && stateValue!=null && cityValue!=null)
                             // {
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(builder: (context) => const Google_Location()),
-                            // );
+                            //   try {
+                            //     firestoreInstance.collection("Business Details").doc(userid!.email).update(
+                            //         {
+                            //         'Country':countryValue.toString(),'State':stateValue.toString(),'City':cityValue.toString(),
+                            //           'Pincode':PincodeCntrlr.text,'Address':AddressCntrlr.text,'MobileNo':MobileCntrlr.text
+                            //         }
+                            //     ).then((value) => {
+                            //      Navigator.push(
+                            //        context,
+                            //        MaterialPageRoute(builder: (context) => const Google_Location()),
+                            //      ),
+                            //     });
+                            //     Fluttertoast.showToast(
+                            //         timeInSecForIosWeb: 1,
+                            //         msg: "Your Details Submitted Successfully..!!!",
+                            //         toastLength: Toast.LENGTH_SHORT,
+                            //         gravity: ToastGravity.BOTTOM,
+                            //         backgroundColor: Colors.deepPurple,
+                            //         textColor: Colors.white
+                            //     );
+                            //
+                            //   } catch (e) {
+                            //     Fluttertoast.showToast(
+                            //         timeInSecForIosWeb: 1,
+                            //         msg: "Values Not Stored",
+                            //         toastLength: Toast.LENGTH_SHORT,
+                            //         gravity: ToastGravity.BOTTOM,
+                            //         backgroundColor: Colors.deepOrange,
+                            //         textColor: Colors.white
+                            //     );
+                            //   }
+                            //   return;
+                            //
                             // } else if(countryValue==null ){
                             //   setState(() {
                             //     dropdownError1="Please Select Country..!!";

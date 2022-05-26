@@ -1,11 +1,13 @@
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:one_clx/constants/constant.dart';
 import 'package:one_clx/registration_forms/business_headerimage.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:swipe_to/swipe_to.dart';
 
 class Business_Logo extends StatefulWidget {
@@ -16,20 +18,10 @@ class Business_Logo extends StatefulWidget {
 }
 
 class _Business_LogoState extends State<Business_Logo> {
-  File?logo;
-  Future pickImage() async{
-    try{
-      final image= await ImagePicker().pickImage(source: ImageSource.gallery);
-      if(image==null)return;
-      final tempImage= File(image.path);
-      setState(() {
-        this.logo = tempImage;
-      });
-    } on PlatformException catch (e){
-      print('fail to pick  image:$e');
-    }
-
-  }
+  final userid = FirebaseAuth.instance.currentUser;
+  final firestoreInstance = FirebaseFirestore.instance;
+  UploadTask? task;
+  PlatformFile? pickedFile;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -109,18 +101,18 @@ class _Business_LogoState extends State<Business_Logo> {
                     ),
                     child: Text("Upload Logo",style: Const.btntxt,),
                     onPressed: () async {
-                      pickImage();
+                      selectFile();
                     },
                   ),
                 ),
-
                 Stack(
                   children: [
                     Container(
                       height: 150,
                       width: 150,
                       color: Color(0xffF1F1F1),
-                      child: logo!=null?Image.file(logo!,fit: BoxFit.fill,):Center(child: Text('Image',style: Const.txt,)),
+
+                      child: pickedFile!=null?Image.file(File(pickedFile!.path!),fit: BoxFit.fill,):Center(child: Text('Image',style: Const.txt,)),
                     ),
                     Positioned(
                         top: 0.0,
@@ -128,7 +120,7 @@ class _Business_LogoState extends State<Business_Logo> {
                         child:InkWell(
                           onTap: (){
                             setState(() {
-                              logo=null;
+                              pickedFile=null;
                             });
                           },
                           child: Align(
@@ -144,6 +136,8 @@ class _Business_LogoState extends State<Business_Logo> {
                         ))
                   ],
                 ),
+                SizedBox(height: 5),
+                task != null ? buildUploadStatus(task!) : Container(),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
@@ -157,12 +151,42 @@ class _Business_LogoState extends State<Business_Logo> {
                           context,
                           MaterialPageRoute(builder: (context) => const Business_Header()),
                         );
-                        // if(logo!=null)
+                        // if(pickedFile!=null)
                         // {
-                        //   Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(builder: (context) => const Business_Header()),
-                        //   );
+                        // final fileName= pickedFile!=null ? pickedFile!.name:'No File Selected';
+                        // print(fileName);
+                        //   try {
+                        //     await uploadFile();
+                        //     firestoreInstance.collection("Business Details").doc(userid!.email).update(
+                        //         {
+                        //           'Business Logo':fileName
+                        //         }
+                        //     ).then((value) => {
+                        //        //Navigator.push(context, MaterialPageRoute(builder: (context) => const Business_Header()),),
+                        //     });
+                        //     await task!.whenComplete(() {
+                        //       Fluttertoast.showToast(
+                        //           timeInSecForIosWeb: 1,
+                        //           msg: "Your files & Details Uploaded Successfully..!!!",
+                        //           toastLength: Toast.LENGTH_SHORT,
+                        //           gravity: ToastGravity.BOTTOM,
+                        //           backgroundColor: Colors.green,
+                        //           textColor: Colors.white
+                        //       );
+                        //       Navigator.push(context, MaterialPageRoute(builder: (context) => const Business_Header()),);
+                        //     }
+                        //     );
+                        //   } catch (e) {
+                        //     Fluttertoast.showToast(
+                        //         timeInSecForIosWeb: 1,
+                        //         msg: "Please Add Your Logo",
+                        //         toastLength: Toast.LENGTH_SHORT,
+                        //         gravity: ToastGravity.BOTTOM,
+                        //         backgroundColor: Colors.deepOrange,
+                        //         textColor: Colors.white
+                        //     );
+                        //   }
+                        //   return;
                         // }else{
                         //   Fluttertoast.showToast(
                         //       timeInSecForIosWeb: 1,
@@ -180,42 +204,6 @@ class _Business_LogoState extends State<Business_Logo> {
                       },
                     ),
                     Image.network("https://firebasestorage.googleapis.com/v0/b/oneclx.appspot.com/o/asset%2Flogo%2FRight.png?alt=media&token=6f429db7-33c2-4063-865b-f0f8417a4acc",),
-
-                    // ElevatedButton(
-                    //   style: ElevatedButton.styleFrom(
-                    //     onPrimary:const Color(0xff5F89D8) ,
-                    //     shape: RoundedRectangleBorder(
-                    //       borderRadius: BorderRadius.circular(5.0),
-                    //     ),
-                    //     primary: const Color(0xff5F89D8),
-                    //   ),
-                    //   child: Text("Previous",style: Const.btntxt,),
-                    //   onPressed: () async {
-                    //     Navigator.pop(context);
-                    //   },
-                    // ),
-                    // ElevatedButton(
-                    //   style: ElevatedButton.styleFrom(
-                    //     onPrimary:const Color(0xff5F89D8) ,
-                    //     shape: RoundedRectangleBorder(
-                    //       borderRadius: BorderRadius.circular(5.0),
-                    //     ),
-                    //     primary: const Color(0xff5F89D8),
-                    //   ),
-                    //   child: Text("Next",style: Const.btntxt,),
-                    //   onPressed: () async {
-                    //     Navigator.push(
-                    //       context,
-                    //       MaterialPageRoute(builder: (context) => const Business_Header()),
-                    //     );
-                    //     // if(_formkey.currentState!.validate())
-                    //     // {
-                    //     //
-                    //     // }else{
-                    //     //   print("UnSuccessfull");
-                    //     // }
-                    //   },
-                    // ),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(0, 25, 0, 0),
                       child: Image.network("https://firebasestorage.googleapis.com/v0/b/oneclx.appspot.com/o/asset%2Flogo%2Fimg2.png?alt=media&token=b8fcb386-3ab4-4f9c-bece-bc3be039c5e5",width: 70,),
@@ -229,4 +217,53 @@ class _Business_LogoState extends State<Business_Logo> {
       ),
     );
   }
+  Future selectFile() async {
+    final result = await FilePicker.platform.pickFiles(allowMultiple: false,type: FileType.image);
+    if(result==null) return;
+    setState(() {
+      pickedFile = result.files.first;
+    });
+  }
+  Future uploadFile() async {
+    final file = File(pickedFile!.path!);
+    final path = 'Business Logo/${userid!.email}/${pickedFile!.name}';
+    final ref = FirebaseStorage.instance.ref().child(path);
+    setState(() {
+      task=ref.putFile(file);
+    });
+    final snapshot = await task!.whenComplete(() {});
+    final urlDownload = await snapshot.ref.getDownloadURL();
+    print('Download-Link: $urlDownload');
+  }
+
+  Widget buildUploadStatus(UploadTask task) => StreamBuilder<TaskSnapshot>(
+    stream: task.snapshotEvents,
+    builder: (context, snapshot) {
+      if(snapshot.hasData){
+        final data =snapshot.data!;
+        double progress = data.bytesTransferred/data.totalBytes;
+        return SizedBox(
+          height: 50,
+          child: Stack(
+            fit: StackFit.expand,
+            children: [
+              LinearProgressIndicator(
+                value: progress,
+                backgroundColor: Colors.grey,
+                color: Colors.green,
+              ),
+              Center(
+                child: Text(
+                  '${(100 * progress).roundToDouble()}%',
+                  style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),
+                ),
+              ),
+            ],
+          ),
+        );
+      } else {
+        return Container();
+      }
+    },
+  );
 }

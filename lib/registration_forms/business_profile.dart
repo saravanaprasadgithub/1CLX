@@ -1,10 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:one_clx/authentication/facebook_signin.dart';
-import 'package:one_clx/authentication/google_signin.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:one_clx/authentication/login.dart';
-import 'package:one_clx/authentication/twitter%20_signin.dart';
+import 'package:one_clx/constants/commonValues.dart';
 import 'package:one_clx/constants/constant.dart';
 import 'package:one_clx/registration_forms/business_location.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -20,6 +21,8 @@ class Business_Profile extends StatefulWidget {
 class _Business_ProfileState extends State<Business_Profile> {
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
   TextEditingController BusinessName = TextEditingController();
+  final userid = FirebaseAuth.instance.currentUser;
+  final firestoreInstance = FirebaseFirestore.instance;
   String? businame,businesstype;
   SharedPreferences? logindata;
   String? email;
@@ -296,20 +299,43 @@ class _Business_ProfileState extends State<Business_Profile> {
                                    context,
                                    MaterialPageRoute(builder: (context) => const Business_Location()),
                                  );
-                                 // if(_formkey.currentState!.validate())
-                                 // {
-                                 //   Navigator.push(
-                                 //     context,
-                                 //     MaterialPageRoute(builder: (context) => const Business_Location()),
-                                 //   );
-                                 // }else{
-                                 //   print("UnSuccessfull");
-                                 // }
+                                //  if(_formkey.currentState!.validate())
+                                //  {
+                                //  logindata!.setString('businessName',BusinessName.text);
+                                //  try {
+                                //    firestoreInstance.collection("Business Details").doc(userid!.email).set(
+                                //    {
+                                //     'Business Name':BusinessName.text,'Business Type':businesstype.toString()
+                                //    }
+                                //    ).then((value) => {
+                                //    Navigator.push(context, MaterialPageRoute(builder: (context) => const Business_Location()),),
+                                //    });
+                                //    Fluttertoast.showToast(
+                                //    timeInSecForIosWeb: 1,
+                                //    msg: "Your Details Submitted Successfully..!!!",
+                                //    toastLength: Toast.LENGTH_SHORT,
+                                //    gravity: ToastGravity.BOTTOM,
+                                //    backgroundColor: Colors.deepPurple,
+                                //    textColor: Colors.white
+                                //    );
+                                //  } catch (e) {
+                                //    Fluttertoast.showToast(
+                                //        timeInSecForIosWeb: 1,
+                                //        msg: "Values Not Stored",
+                                //        toastLength: Toast.LENGTH_SHORT,
+                                //        gravity: ToastGravity.BOTTOM,
+                                //        backgroundColor: Colors.deepOrange,
+                                //        textColor: Colors.white
+                                //    );
+                                //  }
+                                // return;
+                                //  }else{
+                                //    print("UnSuccessfull");
+                                //  }
                                },
                                onRightSwipe: ()async{
                                  showExitPopup();
                                },
-
                              ),
                               Image.network("https://firebasestorage.googleapis.com/v0/b/oneclx.appspot.com/o/asset%2Flogo%2FRight.png?alt=media&token=6f429db7-33c2-4063-865b-f0f8417a4acc",),
                               Padding(

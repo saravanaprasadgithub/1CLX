@@ -1,8 +1,10 @@
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:one_clx/constants/constant.dart';
 import 'package:one_clx/registration_forms/publish.dart';
 import 'package:swipe_to/swipe_to.dart';
@@ -15,21 +17,14 @@ class Business_Images extends StatefulWidget {
 }
 
 class _Business_ImagesState extends State<Business_Images> {
-  List <XFile> ? images=[];
-  Future pickImage() async{
-    try{
-      final List <XFile> ? image= await ImagePicker().pickMultiImage(maxHeight: 300,maxWidth: 300);
-      if(image==null)return;
-      setState(() {
-        images!.addAll(image);
-      });
-    } on PlatformException catch (e){
-      print('fail to pick  image:$e');
-    }
-
-  }
+  final userid = FirebaseAuth.instance.currentUser;
+  final firestoreInstance = FirebaseFirestore.instance;
+  UploadTask? task;
+  List<PlatformFile> images = [];
+  PlatformFile? pickedFile;
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: Color(0xffFFFFFF),
       body: NotificationListener<OverscrollIndicatorNotification>(
@@ -107,7 +102,7 @@ class _Business_ImagesState extends State<Business_Images> {
                     ),
                     child: Text("Upload Logo",style: Const.btntxt,),
                     onPressed: () async {
-                      pickImage();
+                      selectFile();
                     },
                   ),
                 ),
@@ -119,7 +114,7 @@ class _Business_ImagesState extends State<Business_Images> {
                   child: ListView.builder(
                     shrinkWrap: true,
                     scrollDirection: Axis.horizontal,
-                    itemCount: images!.isEmpty? 1 :images!.length,
+                    itemCount: images.isEmpty? 1 :images.length,
                     itemBuilder: (context,index){
                       return Stack(
                         children: [
@@ -127,7 +122,7 @@ class _Business_ImagesState extends State<Business_Images> {
                             height: 150,
                             width: 150,
                             color: Color(0xffF1F1F1),
-                            child: images!.isNotEmpty?Image.file(File(images![index].path),fit: BoxFit.fill,):Center(child: Text('Image',style: Const.txt,)),
+                            child: images.isNotEmpty?Image.file(File(images[index].path!),fit: BoxFit.fill,):Center(child: Text('Image',style: Const.txt,)),
                           ),
                           Positioned(
                               top: 0.0,
@@ -135,7 +130,7 @@ class _Business_ImagesState extends State<Business_Images> {
                               child:InkWell(
                                 onTap: (){
                                   setState(() {
-                                    images!.removeAt(index);
+                                    images.removeAt(index);
                                   });
                                 },
                                 child: Align(
@@ -152,9 +147,10 @@ class _Business_ImagesState extends State<Business_Images> {
                         ],
                       );
                     },
-
                   ),
                 ),
+                SizedBox(height: 5),
+                task != null ? buildUploadStatus(task!) : Container(),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
@@ -168,12 +164,44 @@ class _Business_ImagesState extends State<Business_Images> {
                           context,
                           MaterialPageRoute(builder: (context) => const Publish()),
                         );
-                        // if(images!.length>2)
+                        // if(images.length>2)
                         // {
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(builder: (context) => const Publish()),
-                        // );
+                        //   final fileName= pickedFile!=null ? pickedFile!.name:'No File Selected';
+                        //   print(fileName);
+                        //   try {
+                        //     for(pickedFile in images ){
+                        //       await uploadFile();
+                        //     }
+                        //     firestoreInstance.collection("Business Details").doc(userid!.email).update(
+                        //         {
+                        //           'Business Images':fileName
+                        //         }
+                        //     ).then((value) => {
+                        //       // Navigator.push(context, MaterialPageRoute(builder: (context) => const Business_Images()),),
+                        //     });
+                        //     await task!.whenComplete(() {
+                        //       Fluttertoast.showToast(
+                        //           timeInSecForIosWeb: 1,
+                        //           msg: "Your files & Details Uploaded Successfully..!!!",
+                        //           toastLength: Toast.LENGTH_SHORT,
+                        //           gravity: ToastGravity.BOTTOM,
+                        //           backgroundColor: Colors.green,
+                        //           textColor: Colors.white
+                        //       );
+                        //       Navigator.push(context, MaterialPageRoute(builder: (context) => const Publish()),);
+                        //     }
+                        //     );
+                        //   } catch (e) {
+                        //     Fluttertoast.showToast(
+                        //         timeInSecForIosWeb: 1,
+                        //         msg: "Please Add Atleast 3 Images",
+                        //         toastLength: Toast.LENGTH_SHORT,
+                        //         gravity: ToastGravity.BOTTOM,
+                        //         backgroundColor: Colors.deepOrange,
+                        //         textColor: Colors.white
+                        //     );
+                        //   }
+                        //   return;
                         // }
                         // else{
                         //     Fluttertoast.showToast(
@@ -204,4 +232,54 @@ class _Business_ImagesState extends State<Business_Images> {
       ),
     );
   }
+  Future selectFile() async {
+    final result = await FilePicker.platform.pickFiles(allowMultiple: true,type: FileType.image);
+    if(result==null) return;
+    setState(() {
+      images = result.files;
+      pickedFile = result.files.first;
+    });
+  }
+  Future uploadFile() async {
+    final file = File(pickedFile!.path!);
+    final path = 'Business Images/${userid!.email}/${pickedFile!.name}';
+    final ref = FirebaseStorage.instance.ref().child(path);
+    setState(() {
+      task=ref.putFile(file);
+    });
+    final snapshot = await task!.whenComplete(() {});
+    final urlDownload = await snapshot.ref.getDownloadURL();
+    print('Download-Link: $urlDownload');
+  }
+
+  Widget buildUploadStatus(UploadTask task) => StreamBuilder<TaskSnapshot>(
+    stream: task.snapshotEvents,
+    builder: (context, snapshot) {
+      if(snapshot.hasData){
+        final data =snapshot.data!;
+        double progress = data.bytesTransferred/data.totalBytes;
+        return SizedBox(
+          height: 50,
+          child: Stack(
+            fit: StackFit.expand,
+            children: [
+              LinearProgressIndicator(
+                value: progress,
+                backgroundColor: Colors.grey,
+                color: Colors.green,
+              ),
+              Center(
+                child: Text(
+                  '${(100 * progress).roundToDouble()}%',
+                  style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),
+                ),
+              ),
+            ],
+          ),
+        );
+      } else {
+        return Container();
+      }
+    },
+  );
 }

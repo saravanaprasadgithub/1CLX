@@ -1,7 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:one_clx/constants/constant.dart';
 import 'package:one_clx/registration_forms/business_logo.dart';
 import 'package:swipe_to/swipe_to.dart';
+
 
 class Business_Description extends StatefulWidget {
   const Business_Description({Key? key}) : super(key: key);
@@ -11,6 +15,8 @@ class Business_Description extends StatefulWidget {
 }
 
 class _Business_DescriptionState extends State<Business_Description> {
+  final userid = FirebaseAuth.instance.currentUser;
+  final firestoreInstance = FirebaseFirestore.instance;
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
   TextEditingController BusinessDesc = TextEditingController();
   TextEditingController EmailCntrlr = TextEditingController();
@@ -216,10 +222,37 @@ class _Business_DescriptionState extends State<Business_Description> {
                                 );
                                 // if(_formkey.currentState!.validate())
                                 // {
-                                //   Navigator.push(
-                                //     context,
-                                //     MaterialPageRoute(builder: (context) => const Business_Logo()),
-                                //   );
+                                //   try {
+                                //     firestoreInstance.collection("Business Details").doc(userid!.email).update(
+                                //         {
+                                //           'Description':BusinessDesc.text,'Email':EmailCntrlr.text,'WebURL':WebURLCntrlr.text
+                                //         }
+                                //     ).then((value) => {
+                                //       Navigator.push(
+                                //         context,
+                                //         MaterialPageRoute(builder: (context) => const Business_Logo()),
+                                //       ),
+                                //     });
+                                //     Fluttertoast.showToast(
+                                //         timeInSecForIosWeb: 1,
+                                //         msg: "Your Details Submitted Successfully..!!!",
+                                //         toastLength: Toast.LENGTH_SHORT,
+                                //         gravity: ToastGravity.BOTTOM,
+                                //         backgroundColor: Colors.deepPurple,
+                                //         textColor: Colors.white
+                                //     );
+                                //
+                                //   } catch (e) {
+                                //     Fluttertoast.showToast(
+                                //         timeInSecForIosWeb: 1,
+                                //         msg: "Values Not Stored",
+                                //         toastLength: Toast.LENGTH_SHORT,
+                                //         gravity: ToastGravity.BOTTOM,
+                                //         backgroundColor: Colors.deepOrange,
+                                //         textColor: Colors.white
+                                //     );
+                                //   }
+                                //   return;
                                 // }else{
                                 //   print("UnSuccessfull");
                                 // }
@@ -228,7 +261,6 @@ class _Business_DescriptionState extends State<Business_Description> {
                               onRightSwipe: ()async{
                                 Navigator.pop(context);
                               },
-
                             ),
                             Image.network("https://firebasestorage.googleapis.com/v0/b/oneclx.appspot.com/o/asset%2Flogo%2FRight.png?alt=media&token=6f429db7-33c2-4063-865b-f0f8417a4acc",),
                             Padding(
