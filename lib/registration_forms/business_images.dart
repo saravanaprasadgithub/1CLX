@@ -100,7 +100,7 @@ class _Business_ImagesState extends State<Business_Images> {
                       ),
                       primary: const Color(0xff5F89D8),
                     ),
-                    child: Text("Upload Logo",style: Const.btntxt,),
+                    child: Text("Upload Image",style: Const.btntxt,),
                     onPressed: () async {
                       selectFile();
                     },
@@ -235,10 +235,28 @@ class _Business_ImagesState extends State<Business_Images> {
   Future selectFile() async {
     final result = await FilePicker.platform.pickFiles(allowMultiple: true,type: FileType.image);
     if(result==null) return;
-    setState(() {
-      images = result.files;
-      pickedFile = result.files.first;
-    });
+    images = result.files;
+    pickedFile = result.files.first;
+    File image= File(pickedFile!.path!);
+    var decodedImage = await decodeImageFromList(image.readAsBytesSync());
+    print(decodedImage.width);
+    print(decodedImage.height);
+    if(decodedImage.width<=300&&decodedImage.height<=300){
+      Fluttertoast.showToast(
+          timeInSecForIosWeb: 1,
+          msg: "Image Support above Width 300 & Height 300",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.deepOrange,
+          textColor: Colors.white
+      );
+    }
+    else {
+      setState(() {
+        images = result.files;
+        pickedFile = result.files.first;
+      });
+    }
   }
   Future uploadFile() async {
     final file = File(pickedFile!.path!);

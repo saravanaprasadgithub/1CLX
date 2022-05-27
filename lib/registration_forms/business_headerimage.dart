@@ -224,9 +224,26 @@ class _Business_HeaderState extends State<Business_Header> {
   Future selectFile() async {
     final result = await FilePicker.platform.pickFiles(allowMultiple: false,type: FileType.image);
     if(result==null) return;
-    setState(() {
-      pickedFile = result.files.first;
-    });
+    pickedFile = result.files.first;
+    File image= File(pickedFile!.path!);
+    var decodedImage = await decodeImageFromList(image.readAsBytesSync());
+    print(decodedImage.width);
+    print(decodedImage.height);
+    if(decodedImage.width<=540&&decodedImage.height<=540){
+      Fluttertoast.showToast(
+          timeInSecForIosWeb: 1,
+          msg: "Image Support above Width 540 & Height 540",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.deepOrange,
+          textColor: Colors.white
+      );
+    }
+    else {
+      setState(() {
+        pickedFile = result.files.first;
+      });
+    }
   }
   Future uploadFile() async {
     final file = File(pickedFile!.path!);

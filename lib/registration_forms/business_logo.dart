@@ -107,21 +107,14 @@ class _Business_LogoState extends State<Business_Logo> {
                 ),
                 Stack(
                   children: [
-                    Container(
-                      height: 150,
-                      width: 150,
-                      color: Color(0xffF1F1F1),
-
-                      child: pickedFile!=null?Image.file(File(pickedFile!.path!),fit: BoxFit.fill,):Center(child: Text('Image',style: Const.txt,)),
-                    ),
                     Positioned(
                         top: 0.0,
                         right: 0.0,
                         child:InkWell(
                           onTap: (){
-                            setState(() {
-                              pickedFile=null;
-                            });
+                            // setState(() {
+                            //   pickedFile=null;
+                            // });
                           },
                           child: Align(
                             alignment: Alignment.topRight,
@@ -133,7 +126,15 @@ class _Business_LogoState extends State<Business_Logo> {
                               ),
                             ),
                           ),
-                        ))
+                        )),
+                    Container(
+                      height: 150,
+                      width: 150,
+                      color: Color(0xffF1F1F1),
+
+                      child: pickedFile!=null?Image.file(File(pickedFile!.path!),fit: BoxFit.fill,):Center(child: Text('Image',style: Const.txt,)),
+                    ),
+
                   ],
                 ),
                 SizedBox(height: 5),
@@ -220,9 +221,26 @@ class _Business_LogoState extends State<Business_Logo> {
   Future selectFile() async {
     final result = await FilePicker.platform.pickFiles(allowMultiple: false,type: FileType.image);
     if(result==null) return;
-    setState(() {
-      pickedFile = result.files.first;
-    });
+    pickedFile = result.files.first;
+    File image= File(pickedFile!.path!);
+    var decodedImage = await decodeImageFromList(image.readAsBytesSync());
+    print(decodedImage.width);
+    print(decodedImage.height);
+    if(decodedImage.width>300&&decodedImage.height>300){
+            Fluttertoast.showToast(
+                timeInSecForIosWeb: 1,
+                msg: "Image Support below Width 300 & Height 300",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                backgroundColor: Colors.deepOrange,
+                textColor: Colors.white
+            );
+    }
+    else {
+      setState(() {
+        pickedFile = result.files.first;
+      });
+    }
   }
   Future uploadFile() async {
     final file = File(pickedFile!.path!);
