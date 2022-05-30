@@ -53,6 +53,7 @@ dependencies:
   permission_handler: ^9.2.0
   sizer: ^2.0.15
   file_picker: ^4.6.0
+  url_launcher: ^6.1.2
 
 dev_dependencies:
   flutter_test:

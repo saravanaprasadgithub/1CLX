@@ -1,7 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:one_clx/constants/constant.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:swipe_to/swipe_to.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class Website_Created extends StatefulWidget {
   const Website_Created({Key? key}) : super(key: key);
@@ -11,7 +14,9 @@ class Website_Created extends StatefulWidget {
 }
 
 class _Website_CreatedState extends State<Website_Created> {
-  SharedPreferences?logindata;
+  final firestoreInstance = FirebaseFirestore.instance;
+  final userid = FirebaseAuth.instance.currentUser;
+  //SharedPreferences?logindata;
   String?businessName;
   @override
   void initState() {
@@ -19,10 +24,17 @@ class _Website_CreatedState extends State<Website_Created> {
     super.initState();
   }
   getdata()async{
-    logindata=await SharedPreferences.getInstance();
-    setState(() {
-      businessName=logindata?.getString('businessName');
-    });
+    // logindata=await SharedPreferences.getInstance();
+    // setState(() {
+    //   businessName=logindata?.getString('businessName');
+    // });
+ final data = firestoreInstance.collection("Business Details").doc(userid!.email);
+    final snapshot = await data.get();
+    if(snapshot.exists){
+      setState(() {
+        businessName=snapshot['Business Name'];
+      });
+    }
   }
   @override
   Widget build(BuildContext context) {
@@ -65,8 +77,23 @@ class _Website_CreatedState extends State<Website_Created> {
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(20,0,20,0),
-                  child: Center(child: Text("https://www.1clx.com/${businessName}",style: Const.Normal,textAlign: TextAlign.center,)),
+                  child: GestureDetector(
+                    child: Text(
+                      "https://www.1clx.com/${businessName}",style: Const.UrlLink,textAlign: TextAlign.center
+                    ),
+                    onTap: ()async{
+                      try {
+                      await launchUrlString("https://version.0.0.1clx.com/");
+                      }catch(e){
+                        print("Link Incorrect");
+                      }
+                    },
+                  ),
                 ),
+                // Padding(
+                //   padding: const EdgeInsets.fromLTRB(20,0,20,0),
+                //   child: Center(child: Text("https://www.1clx.com/${businessName}",style: Const.UrlLink,textAlign: TextAlign.center,)),
+                // ),
                 SizedBox(height: 5,),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(20,0,20,0),
@@ -96,6 +123,11 @@ class _Website_CreatedState extends State<Website_Created> {
                     ),
                     child: Text("Website",style: Const.btntxt,),
                     onPressed: () async {
+                          // try {
+                          // await launchUrlString("https://version.0.0.1clx.com/");
+                          // }catch(e){
+                          //   print("Link Incorrect");
+                          // }
                     },
                   ),
                 ),

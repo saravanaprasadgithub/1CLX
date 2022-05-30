@@ -26,6 +26,10 @@ class Const{
       textStyle: TextStyle(
           color: Colors.black
       ));
+  static TextStyle UrlLink = GoogleFonts.poppins(
+      textStyle: TextStyle(
+          color: Colors.blue,decoration: TextDecoration.underline
+      ));
   static TextStyle txt = GoogleFonts.poppins(
       textStyle: TextStyle(
         color: Color(0xffBEBEBE),));
