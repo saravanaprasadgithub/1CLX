@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:one_clx/authentication/login.dart';
-import 'package:one_clx/constants/commonValues.dart';
 import 'package:one_clx/constants/constant.dart';
 import 'package:one_clx/registration_forms/business_location.dart';
 import 'package:shared_preferences/shared_preferences.dart';
